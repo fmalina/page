@@ -1,0 +1,46 @@
+{% load page_tags %}
+
+{% if p.updated_at %}
+    <p><small>Last updated: {{ p.updated_at|humantime }}</small></p>
+{% endif %}
+
+{% if page.url == 'help' %}
+    {% for audience_code, audience_name in audiences %}
+    <div class="page__section {{ audience_name|slugify }}">
+        <h2>{{ audience_name }}</h2>
+        <ul class="page-icons">
+        {% for p in ls.reverse %}
+            {% if p.active and p.audience == audience_code %}
+            <li><a href="/{{ page.url }}/{{ p.url }}">{{ p.title|widont }}</a></li>
+            {% endif %}
+        {% endfor %}
+        </ul>
+    </div>
+    <div class="clear"></div>
+{% endif %}
+
+{% if page.url == 'blog' %}
+    <ul class="page__nav-{{ page.url }}">
+    {% for p in ls %}
+            {% if p.active %}
+            <li class="post">
+                <h2><a href="/{{ page.url }}/{{ p.url }}">{{ p.title|widont }}</a></h2>
+                {{ p.teaser|safe }}
+                {% if p.teaser != p.body %}
+                    <p><a href="/{{ page.url }}/{{ p.url }}">Continue reading&hellip;</a></p>
+                {% endif %}
+            </li>
+            {% endif %}
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% if page.url == 'press' %}
+    <ul>
+    {% for p in ls %}
+        {% if p.active %}
+        <li><a href="/{{ page.url }}/{{ p.url }}">{{ p.title|widont }}</a></li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+{% endif %}

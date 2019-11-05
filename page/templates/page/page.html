@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load page_tags %}
+{% block title %}{{ page.title }} - {{ site_name }}{% endblock %}
+{% block head %}
+<link rel="alternate" href="{% url 'feed' %}" type="application/rss+xml" title="RSS">
+{% endblock %}
+
+{% block body %} id="page-{{ page.url }}"{% endblock %}
+{% block body_class %}page{% endblock %}
+
+{% block bc %}
+{% if page.parent %}
+    <div class="breadcrumb" itemprop="breadcrumb">
+		<a href="/">Home</a> ›
+        <a href="{{ page.parent.get_absolute_url }}">{{ page.parent.title }}</a> ›
+    </div>
+{% else %}
+	<br>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if not page.active and not user.is_staff %}
+        <p>Sorry, this page is disabled for now.</p>
+    {% else %}
+        <h1 class="h{% if user.is_staff %} h1nav{% endif %}">
+            {{ page.title|widont }}
+            {% if user.is_staff %}
+                <small><a href="{% url 'edit-page' page.pk %}">edit</a></small>
+            {% endif %}
+        </h1>
+        {% include 'page/page-banner.html' %}
+
+        {{ page.body|safe }}
+        {% include 'page/nav.html' %}
+        {% include 'page/include_below.html' %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,6 @@
+include LICENSE
+include README.rst
+include requirements.txt
+graft page
+recursive-include page/templates *
+

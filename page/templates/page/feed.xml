@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+	<title>{{ site_name }} latest updates</title>
+	<atom:link href="feed" rel="self" type="application/rss+xml" />
+	<link>{{ site_url }}</link>
+	<description>latest updates from {{ site_name }}</description>
+	<language>en-gb</language>
+	{% for page in pages %}
+		{% if page.active %}
+		<item>
+		<title>{{ page.title }}</title>
+		<link>{{ site_url }}{{ page.get_absolute_url }}</link>
+		<pubDate>{{ page.rfc2822_date }}</pubDate>
+		<guid isPermaLink="false">{{ shorten }}p{{ page.pk }}</guid>
+		<description><![CDATA[{{ page.desc }}]]></description>
+		</item>
+		{% endif %}
+	{% endfor %}
+	</channel>
+</rss>
