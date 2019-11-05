@@ -4,14 +4,14 @@
     <p><small>Last updated: {{ p.updated_at|humantime }}</small></p>
 {% endif %}
 
-{% if page.url == 'help' %}
-    {% for audience_code, audience_name in audiences %}
-    <div class="page__section {{ audience_name|slugify }}">
-        <h2>{{ audience_name }}</h2>
-        <ul class="page-icons">
-        {% for p in ls.reverse %}
-            {% if p.active and p.audience == audience_code %}
-            <li><a href="/{{ page.url }}/{{ p.url }}">{{ p.title|widont }}</a></li>
+{% if page.slug == 'docs' %}
+    {% for section in ls %}
+    <div class="page__section">
+        <h2>{{ section.title }}</h2>
+        <ul class="page__list">
+        {% for p in section.children %}
+            {% if p.active %}
+            <li><a href="/{{ page.slug }}/{{ p.slug }}">{{ p.title|widont }}</a></li>
             {% endif %}
         {% endfor %}
         </ul>
@@ -19,15 +19,15 @@
     <div class="clear"></div>
 {% endif %}
 
-{% if page.url == 'blog' %}
-    <ul class="page__nav-{{ page.url }}">
+{% if page.slug == 'blog' %}
+    <ul class="page__nav-{{ page.slug }}">
     {% for p in ls %}
             {% if p.active %}
             <li class="post">
-                <h2><a href="/{{ page.url }}/{{ p.url }}">{{ p.title|widont }}</a></h2>
+                <h2><a href="/{{ page.slug }}/{{ p.slug }}">{{ p.title|widont }}</a></h2>
                 {{ p.teaser|safe }}
                 {% if p.teaser != p.body %}
-                    <p><a href="/{{ page.url }}/{{ p.url }}">Continue reading&hellip;</a></p>
+                    <p><a href="/{{ page.slug }}/{{ p.slug }}">Continue reading&hellip;</a></p>
                 {% endif %}
             </li>
             {% endif %}
@@ -35,11 +35,11 @@
     </ul>
 {% endif %}
 
-{% if page.url == 'press' %}
-    <ul>
+{% if page.slug == 'press' %}
+    <ul class="page__list">
     {% for p in ls %}
         {% if p.active %}
-        <li><a href="/{{ page.url }}/{{ p.url }}">{{ p.title|widont }}</a></li>
+        <li><a href="/{{ page.slug }}/{{ p.slug }}">{{ p.title|widont }}</a></li>
         {% endif %}
     {% endfor %}
     </ul>

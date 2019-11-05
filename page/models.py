@@ -3,6 +3,7 @@ from datetime import datetime
 from email.utils import formatdate
 
 from django.db import models
+from django.template.defaultfilters import slugify
 
 from . import app_settings
 from .utils import meta_desc
@@ -17,42 +18,44 @@ class Page(models.Model):
     )
     title = models.CharField(max_length=200)
     body = models.TextField()
-    audience = models.CharField(
-        max_length=1, blank=True,
-        choices=app_settings.PAGE_AUDIENCE_CHOICES
+    author = models.CharField(max_length=60, null=True, blank=True)
+    slug = models.SlugField(
+        max_length=75, db_index=True,
+        verbose_name='URL slug'
     )
-    url = models.SlugField(max_length=75, db_index=True, verbose_name='URL')
     active = models.BooleanField(default=False)
     updated_at = models.DateTimeField(default=datetime.now, editable=False)
     created_at = models.DateTimeField(default=datetime.now, editable=False)
     
     prefetch = ['parent']
-    ordering = ['parent', 'audience']
+    ordering = ['parent', 'title']
     
     def rfc2822_date(self):
         return formatdate(time.mktime(self.created_at.timetuple()))
     
     def get_absolute_url(self):
         if self.parent:
-            return '/%s/%s' % (self.parent.url, self.url)
+            return '/%s/%s' % (self.parent.slug, self.slug)
         else:
-            return '/%s' % self.url
+            return '/%s' % self.slug
     
     def teaser(self):
         return self.body.split('<hr')[0]
     
     def desc(self):
         return meta_desc(self.body, self.title)
+
+    def children(self):
+        return Page.objects.filter(parent=self).all()
     
     def save(self, *args, **kwargs):
         self.updated_at = datetime.now()
+        if not self.slug:
+            self.slug = slugify(self.title)
         super(Page, self).save(*args, **kwargs)
     
     def __str__(self):
         return self.title
-    
-    class Meta:
-        db_table = 'pages'
 
 
 class Redirect(models.Model):
@@ -75,6 +78,3 @@ class Redirect(models.Model):
     
     def __str__(self):
         return '%s → %s' % (self.old_path, self.new_path)
-    
-    class Meta:
-        db_table = 'redirects'

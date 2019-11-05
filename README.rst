@@ -33,6 +33,14 @@ Add the ``page`` URLs to your ``urls.py``
         path('', include('page.urls')),
     ]
 
+Add middleware:
+
+.. code:: python
+
+    MIDDLEWARE += [
+        'page.middleware.fallback_middleware'
+    ]
+
 Create your tables
 
 ::

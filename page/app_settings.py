@@ -7,16 +7,12 @@ def soft_404(path):
 
 
 PAGE_PARENT_IDS = getattr(settings, 'PAGE_PARENT_IDS', [1, 2, 3])  # e.g. help, blog and press
-PAGE_AUDIENCE_CHOICES = getattr(
-    settings, 'PAGE_AUDIENCE_CHOICES',
-    [('a', 'consenting adults'),
-     ('k', 'kids')]
-)
-PAGE_SOFT_404_LOOKUP_FUNC = gettattr(
+
+PAGE_SOFT_404_LOOKUP_FUNC = getattr(
     settings, 'PAGE_SOFT_404_LOOKUP_FUNC',
     soft_404
 )
-PAGE_SOFT_404_MSG = gettattr(
+PAGE_SOFT_404_MSG = getattr(
     settings, 'PAGE_SOFT_404_MSG',
     'That listing is gone, here are similar ones.'
 )
