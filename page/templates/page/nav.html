@@ -1,7 +1,7 @@
 {% load page_tags %}
 
 {% if p.updated_at %}
-    <p><small>Last updated: {{ p.updated_at|humantime }}</small></p>
+    <p><small>Last updated: {{ p.updated_at }}</small></p>
 {% endif %}
 
 {% if page.slug == 'docs' %}
@@ -16,6 +16,7 @@
         {% endfor %}
         </ul>
     </div>
+    {% endfor %}
     <div class="clear"></div>
 {% endif %}
 

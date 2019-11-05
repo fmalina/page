@@ -26,7 +26,7 @@ class Page(models.Model):
     active = models.BooleanField(default=False)
     updated_at = models.DateTimeField(default=datetime.now, editable=False)
     created_at = models.DateTimeField(default=datetime.now, editable=False)
-    
+
     prefetch = ['parent']
     ordering = ['parent', 'title']
     
