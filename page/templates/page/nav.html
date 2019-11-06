@@ -36,11 +36,13 @@
     </ul>
 {% endif %}
 
-{% if page.slug == 'press' %}
+{% if page.slug == 'press' or page.slug == 'books' %}
     <ul class="page__list">
     {% for p in ls %}
         {% if p.active %}
-        <li><a href="/{{ page.slug }}/{{ p.slug }}">{{ p.title|widont }}</a></li>
+        <li><a href="/{{ page.slug }}/{{ p.slug }}">{{ p.title|widont }}</a>
+        {% if p.author %}by {{ p.author }}{% endif %}
+        </li>
         {% endif %}
     {% endfor %}
     </ul>
