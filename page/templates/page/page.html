@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load page_tags %}
-{% block title %}{{ page.title }} - {{ site_name }}{% endblock %}
+{% block title %}{{ page.title }}{% if page.author %} by {{ page.author }}{% endif %} - {{ site_name }}{% endblock %}
 {% block head %}
 <link rel="alternate" href="{% url 'feed' %}" type="application/rss+xml" title="RSS">
 {% endblock %}
