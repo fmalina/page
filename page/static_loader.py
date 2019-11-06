@@ -40,8 +40,8 @@ def load_path(path, parent):
     body = tostring(body).decode('utf-8').replace('<body>', '').replace('</body>', '').strip()
     body = html.unescape(body)
     slug = title.split(':')[0].lower().replace(' the ', ' ').replace(' a ', ' ')
-    slug = slugify(truncatewords(slug, 5))
+    slug = slugify(truncatewords(slug, 5)).replace('-', '')
     if asin:
-        slug = f'{slug}.{asin}'
+        slug = f'{slug}_{asin}'
     p = Page(title=title, body=body, author=author, slug=slug, parent=parent, active=True)
     p.save()
