@@ -55,7 +55,7 @@ class Page(models.Model):
         return self.title
 
     class Meta:
-        ordering = ['parent__title', 'title']
+        ordering = ['parent__slug', 'slug']
 
 
 class Redirect(models.Model):
