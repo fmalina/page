@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=200)),
                 ('body', models.TextField()),
-                ('author', models.CharField(blank=True, max_length=60, null=True)),
+                ('author', models.CharField(blank=True, max_length=150, null=True)),
                 ('slug', models.SlugField(max_length=75, verbose_name='URL slug')),
                 ('active', models.BooleanField(default=False)),
                 ('updated_at', models.DateTimeField(default=datetime.datetime.now, editable=False)),

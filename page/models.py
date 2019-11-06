@@ -18,7 +18,7 @@ class Page(models.Model):
     )
     title = models.CharField(max_length=200)
     body = models.TextField()
-    author = models.CharField(max_length=60, null=True, blank=True)
+    author = models.CharField(max_length=150, null=True, blank=True)
     slug = models.SlugField(
         max_length=75, db_index=True,
         verbose_name='URL slug'
