@@ -26,9 +26,6 @@ class Page(models.Model):
     active = models.BooleanField(default=False)
     updated_at = models.DateTimeField(default=datetime.now, editable=False)
     created_at = models.DateTimeField(default=datetime.now, editable=False)
-
-    prefetch = ['parent']
-    ordering = ['parent', 'title']
     
     def rfc2822_date(self):
         return formatdate(time.mktime(self.created_at.timetuple()))
@@ -57,6 +54,9 @@ class Page(models.Model):
     def __str__(self):
         return self.title
 
+    class Meta:
+        ordering = ['parent__title', 'title']
+
 
 class Redirect(models.Model):
     """Permanent redirects from legacy URLs to their new counterparts"""
@@ -70,11 +70,12 @@ class Redirect(models.Model):
     )
     usage_count = models.PositiveIntegerField(default=0, blank=True, null=True, editable=False)
     last_used = models.DateTimeField(default=datetime.now, editable=False)
-    
-    ordering = ['old_path']
-    
+
     def get_absolute_url(self):
         return self.old_path
-    
+
     def __str__(self):
         return '%s → %s' % (self.old_path, self.new_path)
+
+    class Meta:
+        ordering = ['old_path']

@@ -6,7 +6,9 @@ from .utils import local_301
 
 def page(request, slug):
     page = get_object_or_404(Page, slug__exact=slug)
-    ls = Page.objects.all().filter(parent=page.pk).order_by('-created_at')
+    ls = Page.objects.all().filter(parent=page.pk)
+    if page.slug in ('blog', 'press'):
+        ls = ls.order_by('-created_at')
 
     if request.get_full_path() != page.get_absolute_url() and\
             'page=' not in request.get_full_path():
