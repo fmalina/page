@@ -23,6 +23,9 @@
         <p>Sorry, this page is disabled for now.</p>
     {% else %}
         <h1>{{ page.title|widont }}</h1>
+        {% if page.author %}
+            <div class="author">By <b>{{ page.author }}</b></div>
+        {% endif %}
         {% include 'page/page-banner.html' %}
         {{ page.body|safe }}
         {% include 'page/nav.html' %}
