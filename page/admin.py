@@ -8,5 +8,5 @@ class PageAdmin(admin.ModelAdmin):
 
 
 @admin.register(Redirect)
-class PageAdmin(admin.ModelAdmin):
+class RedirectAdmin(admin.ModelAdmin):
     list_display = ('old_path', 'new_path', 'usage_count', 'last_used')

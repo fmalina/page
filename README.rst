@@ -33,13 +33,21 @@ Add the ``page`` URLs to your ``urls.py``
         path('', include('page.urls')),
     ]
 
-Add middleware:
+Add middleware and adjust settings:
 
 .. code:: python
 
     MIDDLEWARE += [
         'page.middleware.fallback_middleware'
     ]
+
+    # APPEND_SLASH must be off
+    APPEND_SLASH = False
+
+    # SITE_URL also needs to be in your generic context as {{ site_url }}
+    # add it to your context processor if you didn't yet
+    SITE_URL = 'https://example.org'
+
 
 Create your tables
 
