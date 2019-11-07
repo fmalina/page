@@ -36,6 +36,8 @@ def fallback_middleware(get_response):
                 goto = app_settings.PAGE_SOFT_404_LOOKUP_FUNC(path)
                 if goto:
                     messages.success(request, app_settings.PAGE_SOFT_404_MSG)
-                    return redirect(settings.SITE_URL+'/'+goto, permanent=True)
+                    return redirect(settings.SITE_URL+goto, permanent=True)
+                else:
+                    raise Http404
         return response
     return middleware
