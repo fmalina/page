@@ -12,7 +12,7 @@
 		<title>{{ page.title }}</title>
 		<link>{{ site_url }}{{ page.get_absolute_url }}</link>
 		<pubDate>{{ page.rfc2822_date }}</pubDate>
-		<guid isPermaLink="false">{{ shorten }}p{{ page.pk }}</guid>
+		<guid isPermaLink="false">{{ site_url }}/p{{ page.pk }}</guid>
 		<description><![CDATA[{{ page.desc }}]]></description>
 		</item>
 		{% endif %}
