@@ -32,9 +32,9 @@ class Page(models.Model):
     
     def get_absolute_url(self):
         if self.parent:
-            return '/%s/%s' % (self.parent.slug, self.slug)
+            return f'/{self.parent.slug}/{self.slug}'
         else:
-            return '/%s' % self.slug
+            return f'/{self.slug}'
     
     def teaser(self):
         return self.body.split('<hr')[0]
@@ -75,7 +75,7 @@ class Redirect(models.Model):
         return self.old_path
 
     def __str__(self):
-        return '%s → %s' % (self.old_path, self.new_path)
+        return f'{self.old_path} → {self.new_path}'
 
     class Meta:
         ordering = ['old_path']

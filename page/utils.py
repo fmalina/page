@@ -6,7 +6,7 @@ from django.template.defaultfilters import truncatewords, striptags
 def meta_desc(body, title):
     """Generate meta description out of body and title."""
     body = striptags(truncatewords(body, 50))  # strip tags & newlines
-    s = '%s - %s' % (body, title)  # body alone can be too short
+    s = f'{body} - {title}'  # body alone can be too short
     limit = 156
     if len(s) <= limit:
         return s
