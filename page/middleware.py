@@ -14,7 +14,7 @@ def fallback_middleware(get_response):
     def middleware(request):
         path = request.get_full_path()
         response = get_response(request)
-        if response.status_code not in (404,410,301):
+        if response.status_code not in (404,410):
             return response
         try:
             slug = path.split('?')[0]
