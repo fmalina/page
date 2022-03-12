@@ -37,4 +37,12 @@ class Migration(migrations.Migration):
                 ('parent', models.ForeignKey(blank=True, limit_choices_to={'id__in': [1, 2, 3]}, null=True, on_delete=django.db.models.deletion.SET_NULL, to='page.Page', verbose_name='Section')),
             ],
         ),
+        migrations.AlterModelOptions(
+            name='page',
+            options={'ordering': ['parent__slug', 'slug']},
+        ),
+        migrations.AlterModelOptions(
+            name='redirect',
+            options={'ordering': ['old_path']},
+        ),
     ]
