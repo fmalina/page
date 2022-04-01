@@ -5,15 +5,14 @@ from email.utils import formatdate
 from django.db import models
 from django.template.defaultfilters import slugify
 
-from . import app_settings
-from .utils import meta_desc
+from .utils import meta_desc, top_level
 
 
 class Page(models.Model):
     """Editable pages: help centre, blog, press section etc."""
     parent = models.ForeignKey(
         'self', verbose_name="Section", blank=True, null=True,
-        limit_choices_to={'id__in': app_settings.PAGE_PARENT_IDS},
+        limit_choices_to=top_level,
         on_delete=models.SET_NULL
     )
     title = models.CharField(max_length=200)

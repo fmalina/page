@@ -15,5 +15,9 @@ def meta_desc(body, title):
     return ' '.join(words) + '…'
 
 
+def top_level():
+    return {'id__in': settings.PAGE_PARENT_IDS}
+
+
 def local_301(o):
     return redirect(settings.SITE_URL + o.get_absolute_url(), permanent=True)
