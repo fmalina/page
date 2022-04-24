@@ -1,7 +1,7 @@
 """
 Example script loading a clean flat static HTML site into the CMS
 
->>> from page.static_loader import load_folder
+>>> from page.management.commands.static_load import load_folder
 >>> load_folder('./books/*.html', 'Books')
 
 """
