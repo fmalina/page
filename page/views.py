@@ -21,11 +21,6 @@ def page(request, slug):
     })
 
 
-def short(request, pk):
-    p = get_object_or_404(Page, pk=pk)
-    return local_301(p)
-
-
 def feed(request):
     pages = Page.objects.all().order_by('-created_at')[:10]
     return render(request, 'page/feed.xml', {'pages': pages},
