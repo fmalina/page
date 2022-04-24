@@ -6,6 +6,8 @@ def soft_404(path):
     return
 
 
+MD_ROOT = getattr(settings, 'MD_ROOT', 'mdpages/')
+
 PAGE_PARENT_IDS = getattr(settings, 'PAGE_PARENT_IDS', [1, 2, 3])  # e.g. help, blog and press
 
 PAGE_SOFT_404_LOOKUP_FUNC = getattr(
