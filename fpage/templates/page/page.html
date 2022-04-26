@@ -1,8 +1,7 @@
 {% extends 'page/base.html' %}
-{% load page_tags %}
 {% block title %}{{ page.title }}{% if page.author %} by {{ page.author }}{% endif %} - {{ site_name }}{% endblock %}
 {% block head %}
-<link rel="alternate" href="{% url 'feed' %}" type="application/rss+xml" title="RSS">
+<link rel="alternate" href="/feed.xml" type="application/rss+xml" title="RSS">
 {% endblock %}
 
 {% block body_class %}page page__{{ page.slug }}{% endblock %}
@@ -17,16 +16,12 @@
 {% endblock %}
 
 {% block content %}
-    {% if not page.active and not user.is_staff %}
-        <p>Sorry, this page is disabled for now.</p>
-    {% else %}
-        <h1>{{ page.title|widont }}</h1>
-        {% if page.author %}
-            <div class="author">By <b>{{ page.author }}</b></div>
-        {% endif %}
-        {% include 'page/page-banner.html' %}
-        {{ page.body|safe }}
-        {% include 'page/nav.html' %}
-        {% include 'page/page-footer.html' %}
+    <h1>{{ page.title }}</h1>
+    {% if page.author %}
+        <div class="author">By <b>{{ page.author }}</b></div>
     {% endif %}
+    {% include 'page/page-banner.html' %}
+    {{ page.body|safe }}
+    {% include 'page/nav.html' %}
+    <p><a href="{{ page.path }}">edit</a>
 {% endblock %}

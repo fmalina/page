@@ -1,7 +1,5 @@
-{% load page_tags %}
-
-{% if p.updated_at %}
-    <p><small>Last updated: {{ p.updated_at }}</small></p>
+{% if page.created %}
+    <p><small>Created: {{ page.created }}</small></p>
 {% endif %}
 
 {% if page.slug == 'docs' %}
@@ -11,7 +9,7 @@
         <ul class="page__list">
         {% for p in section.children %}
             {% if p.active %}
-            <li><a href="/{{ page.slug }}/{{ p.slug }}">{{ p.title|widont }}</a></li>
+            <li><a href="/{{ page.slug }}/{{ p.slug }}">{{ p.title }}</a></li>
             {% endif %}
         {% endfor %}
         </ul>
@@ -25,7 +23,7 @@
     {% for p in ls %}
             {% if p.active %}
             <li class="post">
-                <h2><a href="/{{ page.slug }}/{{ p.slug }}">{{ p.title|widont }}</a></h2>
+                <h2><a href="/{{ page.slug }}/{{ p.slug }}">{{ p.title }}</a></h2>
                 {{ p.teaser|safe }}
                 {% if p.teaser != p.body %}
                     <p><a href="/{{ page.slug }}/{{ p.slug }}">Continue reading&hellip;</a></p>
@@ -40,7 +38,7 @@
     <ul class="page__list">
     {% for p in ls %}
         {% if p.active %}
-        <li><a href="/{{ page.slug }}/{{ p.slug }}">{{ p.title|widont }}</a>
+        <li><a href="/{{ page.slug }}/{{ p.slug }}">{{ p.title }}</a>
         {% if p.author %}by {{ p.author }}{% endif %}
         </li>
         {% endif %}

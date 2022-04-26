@@ -1,17 +1,17 @@
 from setuptools import setup, find_packages
-import page
+import fpage
 
 setup(
-    name="page",
-    version=page.__version__,
-    description='Replacement for Django contrib flatpages and redirects.',
+    name="f-page",
+    version=fpage.__version__,
+    description='Static site generator.',
     long_description=open('README.rst').read(),
     license='BSD License',
     platforms=['OS Independent'],
     keywords='CMS',
     author='F. Malina',
     author_email='fmalina@pm.me',
-    url="https://github.com/fmalina/django-page",
+    url="https://github.com/fmalina/f-page",
     packages=find_packages(),
     include_package_data=True,
     install_requires=open('requirements.txt').read().split(),

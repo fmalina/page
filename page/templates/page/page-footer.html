@@ -1,3 +1,0 @@
-{% if user.is_authenticated and user.is_staff %}
-    <p><a class="btn" href="{% url 'admin:page_page_change' page.pk %}">edit</a>
-{% endif %}

@@ -1,1 +1,7 @@
-django
+jinja2
+markdown2
+brotli
+
+# loader
+markdownify
+lxml
