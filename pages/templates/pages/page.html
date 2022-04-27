@@ -1,6 +1,7 @@
-{% extends 'page/base.html' %}
+{% extends 'pages/base.html' %}
 {% block title %}{{ page.title }}{% if page.author %} by {{ page.author }}{% endif %} - {{ site_name }}{% endblock %}
 {% block head %}
+<link rel="canonical" href="{{ page.get_absolute_url }}">
 <link rel="alternate" href="/feed.xml" type="application/rss+xml" title="RSS">
 {% endblock %}
 
@@ -10,7 +11,7 @@
 {% if page.parent %}
     <div class="breadcrumb" itemprop="breadcrumb">
 		<a href="/">Home</a> ›
-        <a href="{{ page.parent.get_absolute_url }}">{{ page.parent.title }}</a> ›
+        <a href="/{{ page.parent }}">{{ page.parent }}</a> ›
     </div>
 {% endif %}
 {% endblock %}
@@ -20,8 +21,8 @@
     {% if page.author %}
         <div class="author">By <b>{{ page.author }}</b></div>
     {% endif %}
-    {% include 'page/page-banner.html' %}
-    {{ page.body|safe }}
-    {% include 'page/nav.html' %}
-    <p><a href="{{ page.path }}">edit</a>
+    {% include 'pages/page-banner.html' %}
+    {{ page.body }}
+    {% include 'pages/nav.html' %}
+    <!--p><a href="{{ repo }}{{ page.path }}">edit</a-->
 {% endblock %}

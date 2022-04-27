@@ -1,6 +1,5 @@
 include LICENSE
-include README.rst
+include README.md
 include requirements.txt
-graft fpage
-recursive-include fpage/templates *
-
+graft pages
+recursive-include pages/templates *

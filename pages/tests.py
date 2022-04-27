@@ -1,23 +1,21 @@
 """
-Example script loading a clean flat static HTML site into a set of markdown files
-And exporting markdown files back into a static HTML site
+Test scripts loading a clean flat static HTML site into
+legacy pages DB records and exporting the records back to a set of markdown files
 
-So we can keep pages as files or db records
-Here we generate a site from markdown files
-
->>> from fpage.scripts import load_folder
+>>> from pages.scripts import load_folder
 >>> load_folder('./books/*.html', 'Books')
 """
 
 import glob
 import html
-
+import os
+from unittest import TestCase
 
 from django.template.defaultfilters import slugify
 from lxml.html import fromstring, tostring
-import os
 from markdownify import markdownify
-from fpage.models import Page
+
+from pages.models import Page
 
 
 def load_folder(path, title):
@@ -54,7 +52,7 @@ def load_path(path, parent):
 
 
 def export_md_page(page, md_root):
-    """Exports a page as markdown file"""
+    """Exports a pages as markdown file"""
     path = os.path.join(md_root, page.get_absolute_url()[1:] + '.md')
     d = None  # subdirectory
     if page.parent:
@@ -79,3 +77,12 @@ def export_md(md_root='mdpages/'):
     os.makedirs(md_root)
     for page in Page.objects.all():
         export_md_page(page, md_root)
+
+
+
+class PageTestCase(TestCase):
+    def test_model(self):
+        """Test a pages"""
+        p = Page(body='Lorem ipsum...', title='My title', slug='my-title')
+        self.assertEqual(p.slug, 'my-title')
+        self.assertEqual(p.title, 'My title')

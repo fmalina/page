@@ -7,15 +7,13 @@
 	<description>latest updates from {{ site_name }}</description>
 	<language>en-gb</language>
 	{% for page in pages %}
-		{% if page.active %}
 		<item>
 		<title>{{ page.title }}</title>
 		<link>{{ site_url }}{{ page.get_absolute_url }}</link>
 		<pubDate>{{ page.rfc2822_date }}</pubDate>
-		<guid isPermaLink="false">{{ site_url }}/p{{ page.pk }}</guid>
+		<guid isPermaLink="true">{{ site_url }}{{ page.get_absolute_url }}</guid>
 		<description><![CDATA[{{ page.desc }}]]></description>
 		</item>
-		{% endif %}
 	{% endfor %}
 	</channel>
 </rss>
