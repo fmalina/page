@@ -8,11 +8,11 @@ from pages.models import Page
 
 
 @click.command()
-@click.option('--source', default='.', help='Source folder with markdown files.')
-@click.option('--target', default='_static', help='Destination folder for static site.')
-@click.option('--tpl', default='pages', help='Custom template folder.')
+@click.option('--source', default='.', help='Source folder with markdown files')
+@click.option('--target', default='_static', help='Destination folder for static site')
+@click.option('--tpl', default='pages', help='Custom template folder')
 @click.option('--ext', default='.htm', help='File extension')
-def generate_site(source, target, tpl, ext):
+def generate_site(source, target, tpl, ext, more_context={}):
     """Pages: static site generator"""
     pages = [Page(path) for path in Page.list(source)]
     if tpl == 'pages':
@@ -23,9 +23,9 @@ def generate_site(source, target, tpl, ext):
     if not os.path.exists(target):
         os.makedirs(target)
     for p in pages:
-        content = render_page(p, pages, tpl_env).encode()
+        content = render_page(p, pages, tpl_env, more_context).encode()
         generate_page(target, path=f'{p.get_absolute_url}{ext}', content=content)
-    feed = render_feed(pages, tpl_env).encode()
+    feed = render_feed(pages, tpl_env, more_context).encode()
     generate_page(target, path='/feed.xml', content=feed)
 
 
@@ -51,7 +51,7 @@ def date_sort(ls):
     return sorted(ls, key=lambda x: x.created, reverse=True)
 
 
-def render_page(page, all_pages, tpl_env):
+def render_page(page, all_pages, tpl_env, more_context):
     tpl = tpl_env.get_template('pages/page.html')
     # nav list
     ls = []
@@ -63,13 +63,13 @@ def render_page(page, all_pages, tpl_env):
         if page.parent == 'blog':
             ls = date_sort(ls)
     print(page.get_absolute_url, page.parent, page.slug, ls[:3])
-    return tpl.render(page=page, ls=ls, desc=page.desc)
+    return tpl.render(page=page, ls=ls, desc=page.desc, **more_context)
 
 
-def render_feed(all_pages, tpl_env):
+def render_feed(all_pages, tpl_env, more_context):
     all_pages = date_sort(all_pages)
     tpl = tpl_env.get_template('pages/feed.xml')
-    return tpl.render(pages=all_pages)
+    return tpl.render(pages=all_pages, **more_context)
 
 
 def delete_folders(folders, root):

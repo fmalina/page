@@ -64,17 +64,21 @@ class Page:
 
     @property
     def desc(self):
-        """Generate short description from initial paragraphs"""
         s = Markup(self.body).striptags()
-        s = " ".join(s.split()[:50])
-        limit = 156
-        if len(s) <= limit:
-            return s
-        # cut to size limit, break into words replacing last word with …
-        return ' '.join(s.strip()[:limit].split()[:-1]) + '…'
+        return meta_desc(s)
 
     def __str__(self):
         return self.title
 
     def __repr__(self):
         return self.get_absolute_url
+
+
+def meta_desc(s):
+    """Generate short description from body"""
+    s = " ".join(s.split()[:50])
+    limit = 156
+    if len(s) <= limit:
+        return s
+    # cut to size limit, break into words replacing last word with …
+    return ' '.join(s.strip()[:limit].split()[:-1]) + '…'
