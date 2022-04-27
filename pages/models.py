@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from datetime import datetime as dt
 from email.utils import formatdate
 from pathlib import Path
+
 from markdown2 import markdown
 from markupsafe import Markup
 
@@ -59,6 +60,7 @@ class Page:
         else:
             return f'/{self.slug}'
 
+    @property
     def teaser(self):
         return self.body.split('\n\n***\n\n')[0]
 

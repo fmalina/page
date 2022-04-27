@@ -25,8 +25,10 @@ def generate_site(source, target, tpl, ext, more_context={}):
     for p in pages:
         content = render_page(p, pages, tpl_env, more_context).encode()
         generate_page(target, path=f'{p.get_absolute_url}{ext}', content=content)
-    feed = render_feed(pages, tpl_env, more_context).encode()
+    feed = render_feed(pages, tpl_env, more_context, tpl='pages/feed.xml').encode()
+    smap = render_feed(pages, tpl_env, more_context, tpl='pages/sitemap.xml').encode()
     generate_page(target, path='/feed.xml', content=feed)
+    generate_page(target, path='/sitemap-pages.xml', content=smap)
 
 
 def generate_page(static_root, path, content):
@@ -66,9 +68,9 @@ def render_page(page, all_pages, tpl_env, more_context):
     return tpl.render(page=page, ls=ls, desc=page.desc, **more_context)
 
 
-def render_feed(all_pages, tpl_env, more_context):
+def render_feed(all_pages, tpl_env, more_context, tpl):
     all_pages = date_sort(all_pages)
-    tpl = tpl_env.get_template('pages/feed.xml')
+    tpl = tpl_env.get_template(tpl)
     return tpl.render(pages=all_pages, **more_context)
 
 
