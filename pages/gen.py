@@ -53,8 +53,8 @@ def date_sort(ls):
     return sorted(ls, key=lambda x: x.created, reverse=True)
 
 
-def render_page(page, all_pages, tpl_env, more_context):
-    tpl = tpl_env.get_template('pages/page.html')
+def render_page(page, all_pages, tpl_env, more_context, tpl='pages/page.html'):
+    tpl = tpl_env.get_template(tpl)
     # nav list
     ls = []
     if page.slug in ['blog', 'help', 'activism']:
@@ -64,7 +64,7 @@ def render_page(page, all_pages, tpl_env, more_context):
         # order blog entries by date
         if page.parent == 'blog':
             ls = date_sort(ls)
-    print(page.get_absolute_url, page.parent, page.slug, ls[:3])
+    print(page.get_absolute_url)  # ls[:3]
     return tpl.render(page=page, ls=ls, desc=page.desc, **more_context)
 
 
