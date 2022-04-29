@@ -6,10 +6,10 @@ Pages, a static website generator
 - fast, well compressed, mobile friendly pages
 - feed and sitemap files for your subscribers and search engines
 
-Writers love distraction free plain text formatting using formatting conventions
-from email and usenet [markdown](https://commonmark.org/help/).
+Writers love distraction free conventional plain text
+[formatting](https://commonmark.org/help/).
 Template designers love the easy to read, beautiful and powerful
-[Jinja2 template language](https://palletsprojects.com/p/jinja/).
+[template language](https://palletsprojects.com/p/jinja/).
 
 Installation and run
 --------------------
