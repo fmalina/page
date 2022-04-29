@@ -16,7 +16,7 @@ Pages is a small command line program written in Python programming language.
 It requires [python installed](https://www.python.org/downloads/), which lets user
 install Pages on any platform in a single command.
 
-    pip3 install thepages
+    pip3 install git+https://github.com/fmalina/pages.git
 
 By default, Pages will collect all markdown files in current folder
 and create a HTML website in a static folder using default templates.
