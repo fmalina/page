@@ -1,11 +1,13 @@
+"""An example program with config to generate your site
+Copy it and change variables as needed, so you don't have
+to generate your site with a long command."""
 from pages.gen import generate_site
 
-# example config
 ROOT = '/Users/f/SITES/'
 SOURCE = f'{ROOT}blocl-pages/'
 TARGET = f'{ROOT}blocl/static'
 TPL = f'{ROOT}blocl/blocl/templates'
-EXT = ''
+EXT = '.htm'
 CTX = dict(
     site_name='Blocl',
     site_url='https://blocl.co'
