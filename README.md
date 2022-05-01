@@ -28,7 +28,9 @@ User can run Pages with custom options like so:
 
     pages --source /markdown/source/folder/\
           --target /target/folder/\
-          --tpl /custom/template/folder/
+          --tpl /custom/template/folder/\
+          --ctx "{'site_name': 'My Site', 'site_url': 'https://example.org'}"\
+          --ext .htm
 
 Batteries included
 ------------------
