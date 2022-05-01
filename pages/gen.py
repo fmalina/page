@@ -2,6 +2,9 @@ import os
 import shutil
 import brotli
 import click
+import json
+
+import jinja2
 from jinja2 import Environment, PackageLoader, FileSystemLoader
 
 from pages.models import Page
@@ -12,7 +15,12 @@ from pages.models import Page
 @click.option('--target', default='_static', help='Destination folder for static site')
 @click.option('--tpl', default='pages', help='Custom template folder')
 @click.option('--ext', default='.htm', help='File extension')
-def generate_site(source, target, tpl, ext, more_context={}):
+@click.option('--ctx', default='', help='Extra context')
+def cli(source, target, tpl, ext, ctx):
+    generate_site(source, target, tpl, ext, ctx)
+
+
+def generate_site(source, target, tpl, ext, ctx=None):
     """Pages: static site generator"""
     pages = [Page(path) for path in Page.list(source)]
     if tpl == 'pages':
@@ -20,13 +28,15 @@ def generate_site(source, target, tpl, ext, more_context={}):
     else:
         loader = FileSystemLoader(tpl)
     tpl_env = Environment(loader=loader)
+    if ctx and not isinstance(ctx, dict):
+        ctx = json.loads(ctx)
     if not os.path.exists(target):
         os.makedirs(target)
     for p in pages:
-        content = render_page(p, pages, tpl_env, more_context).encode()
+        content = render_page(p, pages, tpl_env, ctx).encode()
         generate_page(target, path=f'{p.get_absolute_url}{ext}', content=content)
-    feed = render_feed(pages, tpl_env, more_context, tpl='pages/feed.xml').encode()
-    smap = render_feed(pages, tpl_env, more_context, tpl='pages/sitemap.xml').encode()
+    feed = render_feed(pages, tpl_env, ctx, tpl='pages/feed.xml').encode()
+    smap = render_feed(pages, tpl_env, ctx, tpl='pages/sitemap.xml').encode()
     generate_page(target, path='/feed.xml', content=feed)
     generate_page(target, path='/sitemap-pages.xml', content=smap)
 
@@ -40,7 +50,7 @@ def generate_page(static_root, path, content):
         folder = os.path.join(static_root, *path.split('/')[1:-1])
         if not os.path.exists(folder):
             os.makedirs(folder)
-    if path.endswith('/'):
+    if path.endswith('/') or os.path.isdir(full_path):
         full_path = full_path + 'index.html'
     with open(full_path, 'wb+') as f:
         f.write(content)
@@ -53,8 +63,18 @@ def date_sort(ls):
     return sorted(ls, key=lambda x: x.created, reverse=True)
 
 
+def get_template(tpl_env, tpl):
+    """Fallback"""
+    try:
+        return tpl_env.get_template(tpl)
+    except jinja2.exceptions.TemplateNotFound:
+        loader = PackageLoader('pages')
+        tpl_env = Environment(loader=loader)
+        return tpl_env.get_template(tpl)
+
+
 def render_page(page, all_pages, tpl_env, more_context, tpl='pages/page.html'):
-    tpl = tpl_env.get_template(tpl)
+    tpl = get_template(tpl_env, tpl)
     # nav list
     ls = []
     if page.slug in ['blog', 'help', 'activism']:
@@ -70,7 +90,7 @@ def render_page(page, all_pages, tpl_env, more_context, tpl='pages/page.html'):
 
 def render_feed(all_pages, tpl_env, more_context, tpl):
     all_pages = date_sort(all_pages)
-    tpl = tpl_env.get_template(tpl)
+    tpl = get_template(tpl_env, tpl)
     return tpl.render(pages=all_pages, **more_context)
 
 
