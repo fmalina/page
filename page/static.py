@@ -1,10 +1,10 @@
 """
 Static cache utilities for use with Django sites
-Provided here but not used in F-pages, which does not require Django.
+Provided here but not used in *Page*, which does not require Django.
 
 Pages middleware and view decorator to speed up many parts of Django apps.
 
-With `'pages.static.static_cache_middleware'` added to middleware settings
+With `'page.static.static_cache_middleware'` added to middleware settings
 and `CACHING = True` one can export static "detail" pages like so:
 
    from page.static import static_cache

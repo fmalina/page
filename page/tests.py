@@ -2,7 +2,7 @@
 Test scripts loading a clean flat static HTML site into
 legacy pages DB records and exporting the records back to a set of markdown files
 
->>> from page.scripts import load_folder
+>>> from page.tests import load_folder
 >>> load_folder('./books/*.html', 'Books')
 """
 
@@ -52,7 +52,7 @@ def load_path(path, parent):
 
 
 def export_md_page(page, md_root):
-    """Exports a pages as markdown file"""
+    """Exports a page as markdown file"""
     path = os.path.join(md_root, page.get_absolute_url()[1:] + '.md')
     d = None  # subdirectory
     if page.parent:
@@ -72,17 +72,16 @@ def export_md_page(page, md_root):
         os.utime(path, (ctime, ctime))
 
 
-def export_md(md_root='mdpages/'):
-    """Export all pages to markdown"""
+def export_md(md_root='md/'):
+    """Export all to markdown"""
     os.makedirs(md_root)
     for page in Page.objects.all():
         export_md_page(page, md_root)
 
 
-
 class PageTestCase(TestCase):
     def test_model(self):
-        """Test a pages"""
+        """Test a page"""
         p = Page(body='Lorem ipsum...', title='My title', slug='my-title')
         self.assertEqual(p.slug, 'my-title')
         self.assertEqual(p.title, 'My title')

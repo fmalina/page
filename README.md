@@ -32,6 +32,10 @@ User can run Page with custom options like so:
          --ctx "{'site_name': 'My Site', 'site_url': 'https://example.org'}"\
          --ext .htm
 
+Users are encouraged to create their own
+[`./page.py`](https://github.com/fmalina/page/blob/main/page.py)
+with custom options to use instead of provided `page` command line program.
+
 Batteries included
 ------------------
 Minimal default template.

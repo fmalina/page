@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
-"""An example program with config to generate your site
+"""
+An example Page program with config to generate your site
 Copy it and change variables as needed, so you don't have
-to generate your site with a long command."""
+to generate your site with a long command.
+"""
 from page.gen import generate_site
 
 ROOT = '/Users/f/SITES/'
