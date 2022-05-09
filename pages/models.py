@@ -11,18 +11,35 @@ from markupsafe import Markup
 
 @dataclass
 class Page:
-    """Markdown files presented as Page objects"""
+    """
+    Markdown files presented as Page objects
+
+    Attributes:
+            title (str): <h1> has to use ==== not # markdown notation
+            body (str): whatever follows h1
+            slug (str): URL handle from filename without extension
+            path (str): initial text file path
+            parent (str): parent folder
+            created (dt): filesystem time text file was created
+            source (str): source folder (top level) used to determine top level pages
+            author (str): extracted using "By **author name**" pattern right after heading
+            ext (str): empty string, .htm or .html
+    """
     title: str
     body: str
     slug: str
     path: str
     parent: str
     created: dt
+    source: str
     author: str = ''
+    ext: str = ''
 
-    def __init__(self, path=None):
+    def __init__(self, path=None, source='', ext=''):
         if path:
             self.path = path
+            self.source = source
+            self.ext = ext
             content = open(path).read()
             self.title = self.widont(content.split('\n===')[0])
             self.md_body = content.split('===\n')[-1]
@@ -37,6 +54,8 @@ class Page:
                     self.slug = self.parent
                     self.parent = None
             except IndexError:
+                self.parent = None
+            if self.parent == Path(self.source).stem:  # top level
                 self.parent = None
             self.created = dt.fromtimestamp(os.path.getctime(path))
 
@@ -56,9 +75,9 @@ class Page:
     @property
     def get_absolute_url(self):
         if self.parent:
-            return f'/{self.parent}/{self.slug}'
+            return f'/{self.parent}/{self.slug}{self.ext}'
         else:
-            return f'/{self.slug}'
+            return f'/{self.slug}{self.ext}'
 
     @property
     def teaser(self):

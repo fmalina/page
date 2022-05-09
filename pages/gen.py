@@ -23,7 +23,7 @@ def cli(source, target, tpl, ext, ctx):
 
 def generate_site(source, target, tpl, ext, ctx=None):
     """Pages: static site generator"""
-    pages = [Page(path) for path in Page.list(Path(source))]
+    pages = [Page(path, source, ext) for path in Page.list(Path(source))]
     if tpl == 'pages':
         loader = PackageLoader(tpl)
     else:
@@ -35,7 +35,7 @@ def generate_site(source, target, tpl, ext, ctx=None):
         os.makedirs(target)
     for p in pages:
         content = render_page(p, pages, tpl_env, ctx).encode()
-        generate_page(target, path=f'{p.get_absolute_url}{ext}', content=content)
+        generate_page(target, path=f'{p.get_absolute_url}', content=content)
     feed = render_feed(pages, tpl_env, ctx, tpl='pages/feed.xml').encode()
     smap = render_feed(pages, tpl_env, ctx, tpl='pages/sitemap.xml').encode()
     generate_page(target, path='/feed.xml', content=feed)
@@ -52,7 +52,7 @@ def generate_page(static_root, path, content):
         if not os.path.exists(folder):
             os.makedirs(folder)
     if path.endswith('/') or os.path.isdir(full_path):
-        full_path = full_path + 'index.html'
+        full_path = os.path.join(full_path, 'index.html')
     with open(full_path, 'wb+') as f:
         f.write(content)
     with open(full_path + '.br', 'wb+') as cf:
