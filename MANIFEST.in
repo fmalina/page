@@ -1,5 +1,5 @@
 include LICENSE
 include README.md
 include requirements.txt
-graft pages
-recursive-include pages/templates *
+graft page
+recursive-include page/templates *
