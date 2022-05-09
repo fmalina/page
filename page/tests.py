@@ -2,7 +2,7 @@
 Test scripts loading a clean flat static HTML site into
 legacy pages DB records and exporting the records back to a set of markdown files
 
->>> from pages.scripts import load_folder
+>>> from page.scripts import load_folder
 >>> load_folder('./books/*.html', 'Books')
 """
 
@@ -15,7 +15,7 @@ from django.template.defaultfilters import slugify
 from lxml.html import fromstring, tostring
 from markdownify import markdownify
 
-from pages.models import Page
+from page.models import Page
 
 
 def load_folder(path, title):

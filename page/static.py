@@ -7,7 +7,7 @@ Pages middleware and view decorator to speed up many parts of Django apps.
 With `'pages.static.static_cache_middleware'` added to middleware settings
 and `CACHING = True` one can export static "detail" pages like so:
 
-   from pages.static import static_cache
+   from page.static import static_cache
 
    @static_cache
    def my_model_detail_view(request, pk):
@@ -15,7 +15,7 @@ and `CACHING = True` one can export static "detail" pages like so:
 """
 
 from functools import wraps
-from pages.gen import generate_page
+from page.gen import generate_page
 
 
 def static_cache_middleware(get_response):

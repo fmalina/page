@@ -8,7 +8,7 @@ import click
 import jinja2
 from jinja2 import Environment, PackageLoader, FileSystemLoader
 
-from pages.models import Page
+from page.models import Page
 
 
 @click.command()
