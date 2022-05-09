@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """An example program with config to generate your site
 Copy it and change variables as needed, so you don't have
 to generate your site with a long command."""
