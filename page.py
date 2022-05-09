@@ -10,10 +10,11 @@ ROOT = '/Users/f/SITES/'
 SOURCE = f'{ROOT}blocl-pages/'
 TARGET = f'{ROOT}blocl/static'
 TPL = f'{ROOT}blocl/blocl/templates'
-EXT = ''
+EXT = ''  # can be '.htm'/'.html'
 CTX = dict(
     site_name='Blocl',
-    site_url='https://blocl.uk'
+    site_url='https://blocl.uk',
+    repo='https://github.com/fmalina/blocl-pages'
 )
 
 if __name__ == '__main__':
