@@ -47,7 +47,8 @@ or one powered by a slow Content Management System to simple
 markdown powered static site and maintain it with Page.
 
 Programmers using Djagno Web Framework can make their sites faster and less demanding
-using **static cache generation*** helpers provided, see dj.py.
+using **static cache generation** helpers provided,
+see [static.py](https://github.com/fmalina/page/blob/main/page/static.py).
 
 
 ---
