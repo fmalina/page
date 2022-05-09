@@ -42,7 +42,7 @@ class Page:
 
     @staticmethod
     def list(path):
-        return Path(path).parent.rglob('*.md')
+        return list(path.rglob('*.md')) + list(path.rglob('*.txt'))
 
     @staticmethod
     def widont(x):

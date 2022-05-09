@@ -1,9 +1,10 @@
+import json
 import os
 import shutil
+from pathlib import Path
+
 import brotli
 import click
-import json
-
 import jinja2
 from jinja2 import Environment, PackageLoader, FileSystemLoader
 
@@ -22,7 +23,7 @@ def cli(source, target, tpl, ext, ctx):
 
 def generate_site(source, target, tpl, ext, ctx=None):
     """Pages: static site generator"""
-    pages = [Page(path) for path in Page.list(source)]
+    pages = [Page(path) for path in Page.list(Path(source))]
     if tpl == 'pages':
         loader = PackageLoader(tpl)
     else:
@@ -78,7 +79,7 @@ def render_page(page, all_pages, tpl_env, more_context, tpl='pages/page.html'):
     # nav list
     ls = []
     if page.slug in ['blog', 'help', 'activism']:
-        ls = list(page.list(page.path))
+        ls = list(page.list(Path(page.path).parent))
         # pick nav pages out of full list
         ls = [x for x in all_pages if x.path in ls]
         # order blog entries by date
