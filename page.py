@@ -14,7 +14,7 @@ EXT = ''  # can be '.htm'/'.html'
 CTX = dict(
     site_name='Blocl',
     site_url='https://blocl.uk',
-    repo='https://github.com/fmalina/blocl-pages'
+    repo_url='https://github.com/fmalina/blocl-pages/blob/main/'
 )
 
 if __name__ == '__main__':

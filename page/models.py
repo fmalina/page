@@ -73,6 +73,10 @@ class Page:
         return formatdate(time.mktime(self.created.timetuple()))
 
     @property
+    def rel_source_path(self):
+        return str(self.path).replace(self.source, '')
+
+    @property
     def get_absolute_url(self):
         if self.parent:
             return f'/{self.parent}/{self.slug}{self.ext}'
