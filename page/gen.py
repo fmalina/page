@@ -11,7 +11,7 @@ from jinja2 import Environment, PackageLoader, FileSystemLoader
 from page.models import Page
 
 
-@click.command()
+@click.command("cli", context_settings={'show_default': True})
 @click.option('--source', default='.', help='Source folder with markdown files')
 @click.option('--target', default='_static', help='Destination folder for static site')
 @click.option('--tpl', default='page', help='Custom template folder')
