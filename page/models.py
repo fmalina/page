@@ -85,7 +85,9 @@ class Page:
 
     @property
     def teaser(self):
-        return self.body.split('\n\n***\n\n')[0]
+        if '***' in self.body:
+            return self.body.split('\n\n***\n\n')[0]
+        return self.body.split('\n\n')[0]
 
     @property
     def desc(self):
