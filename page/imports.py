@@ -1,5 +1,6 @@
+#!/usr/bin/env python3
 """
-Scripts loading a static HTML site or CMS DB tables into MD files
+Load a static HTML site or CMS database into MD files
 
 >>> from page.imports import load_folder
 >>> load_folder('./books/*.html', 'Books')
@@ -8,14 +9,28 @@ Scripts loading a static HTML site or CMS DB tables into MD files
 import glob
 import html
 import os
-from datetime import datetime
+from datetime import datetime, date
 
 from django.template.defaultfilters import slugify
 from lxml.html import fromstring, tostring
 from markdownify import markdownify
 from sqlalchemy import create_engine
 
-SQL_CONNECT = "postgresql://user:password@host/database"
+import pymysql
+pymysql.install_as_MySQLdb()
+
+DB_USER = os.getenv('DB_USER')
+DB_PASS = os.getenv('DB_PASS')
+DB_NAME = os.getenv('DB_NAME')
+
+SQL_CONNECT = f"mysql://{DB_USER}:{DB_PASS}@localhost/{DB_NAME}"
+SQL_SELECT_WP = f"""
+    SELECT p.ID, p.post_title, p.post_name, par.post_name AS parent,
+           p.post_content, p.post_excerpt, p.post_date
+    FROM wp_posts AS p
+    INNER JOIN wp_posts AS par
+        ON p.post_parent = par.ID
+    ORDER BY parent;"""
 SQL_SELECT_SATCHMO = f"""
     SELECT p.id, p.name, p.slug, cc.slug AS parent,
            p.description, p.short_description, p.date_added
@@ -25,8 +40,9 @@ SQL_SELECT_SATCHMO = f"""
     INNER JOIN product_category AS cc
         ON c.category_id = cc.id
     ORDER BY parent;"""
-SQL_SELECT_WORDPRESS = f"""TBC"""
 
+PAGE_COLS = ['id', 'name', 'title', 'parent',
+             'body', 'meta', 'created']
 MD_ROOT = 'md/'
 
 
@@ -36,18 +52,20 @@ def load_folder(path, md_root=MD_ROOT):
         load_path(path, md_root)
 
 
-def load_db(query=SQL_SELECT_SATCHMO, md_root=MD_ROOT):
-    """Export all to markdown"""
-    os.makedirs(md_root)
+def load_db(query=SQL_SELECT_WP, md_root=MD_ROOT):
+    """Export all DB rows to markdown text files"""
+    if not os.path.exists(md_root):
+        os.makedirs(md_root)
     engine = create_engine(SQL_CONNECT)
     with engine.connect() as con:
         rs = con.execute(query)
         for row in rs:
-            page = row
+            page = dict(zip(PAGE_COLS, row))
             save_md_page(page, md_root)
 
 
 def load_path(path, md_root):
+    """Parse a HTML file to page dict to save as .md"""
     fn = path.split('/')[-1]
     if fn.startswith('_') or fn == 'index.html':
         return
@@ -68,7 +86,8 @@ def load_path(path, md_root):
 
 
 def save_md_page(pd, md_root):
-    """Exports a page dict pd as markdown file
+    """
+    Exports a page dict pd as markdown file
     >>> p = dict(title='My title', slug='my_slug', parent='parent',
     >>>          body='Lorem ipsum...', children=True)
     >>> save_md_page(p, 'src')
@@ -78,9 +97,10 @@ def save_md_page(pd, md_root):
     parent = pd.get('parent')
     content = pd.get('body')
     author = pd.get('author', '')
-    created = pd.get('created') or datetime.now()
+    created = pd.get('created') or date.taday()
+    created = datetime.combine(created, datetime.min.time())
 
-    path = os.path.join(md_root, f'{slug}.txt')
+    path = os.path.join(md_root, f'{slug}.md')
 
     d = None  # subdirectory
     if parent:
@@ -98,3 +118,8 @@ def save_md_page(pd, md_root):
         f.close()
         ctime = created.timestamp()
         os.utime(path, (ctime, ctime))
+
+
+if __name__ == '__main__':
+    # load_folder()
+    load_db()
