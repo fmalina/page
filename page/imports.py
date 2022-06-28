@@ -1,9 +1,26 @@
 #!/usr/bin/env python3
 """
-Load a static HTML site or CMS database into MD files
+Load a CMS database into .md text files
+=======================================
+Connects to CMS DB using env. variables,
+selects columns for pages (see PAGE_COLS), saves markdown.
 
->>> from page.imports import load_folder
->>> load_folder('./books/*.html', 'Books')
+Use DB_NAME, DB_USER, DB_PASS ... env vars, or specify DB_URI.
+Use DB_QUERY that spits out PAGE_COLS. Example WordPress query is provided.
+Send a PR with your query in the collection CMS_QUERIES.
+
+$ export DB_NAME=...DB_USER, DB_PASS, ...CMS_NAME
+$ # or export DB_URI=postgres..., DB_QUERY
+$ ./page/imports.py
+
+Convert a static HTML site into source text files
+-------------------------------------------------
+To load Markdown from existing static site, use Python terminal.
+Using load_path as an example with all the tricks, hack your HTML parsing fuction.
+
+>>> from page.imports import load_folder, load_path
+>>> # def load_path()... # override load path as needed
+>>> load_folder('./books/*.html', 'Books', load_func=load_path)
 """
 
 import glob
@@ -22,42 +39,40 @@ pymysql.install_as_MySQLdb()
 DB_USER = os.getenv('DB_USER')
 DB_PASS = os.getenv('DB_PASS')
 DB_NAME = os.getenv('DB_NAME')
-
-SQL_CONNECT = f"mysql://{DB_USER}:{DB_PASS}@localhost/{DB_NAME}"
-SQL_SELECT_WP = f"""
-    SELECT p.ID, p.post_title, p.post_name, par.post_name AS parent,
-           p.post_content, p.post_excerpt, p.post_date
-    FROM wp_posts AS p
-    INNER JOIN wp_posts AS par
-        ON p.post_parent = par.ID
-    ORDER BY parent;"""
-SQL_SELECT_SATCHMO = f"""
-    SELECT p.id, p.name, p.slug, cc.slug AS parent,
-           p.description, p.short_description, p.date_added
-    FROM product_product AS p
-    INNER JOIN product_product_category AS c
-        ON p.id = c.product_id
-    INNER JOIN product_category AS cc
-        ON c.category_id = cc.id
-    ORDER BY parent;"""
-
-PAGE_COLS = ['id', 'name', 'title', 'parent',
-             'body', 'meta', 'created']
+DB_HOST = os.getenv('DB_HOST') or 'localhost'
+CMS_NAME = os.getenv('CMS_NAME') or 'wordpress'
+DB_URI = os.getenv('DB_URI') or f'mysql://{DB_USER}:{DB_PASS}@{DB_HOST}/{DB_NAME}'
+PAGE_COLS = ['id', 'title', 'slug', 'parent', 'body', 'desc', 'created']
+CMS_QUERIES = {
+    'wordpress': f"""
+        SELECT p.ID, p.post_title, p.post_name, par.post_name AS parent,
+               p.post_content, p.post_excerpt, p.post_date
+        FROM wp_posts AS p
+        INNER JOIN wp_posts AS par
+            ON p.post_parent = par.ID
+        ORDER BY parent;""",
+    'satchmo': f"""
+        SELECT p.id, p.name, p.slug, cc.slug AS parent,
+               p.description, p.short_description, p.date_added
+        FROM product_product AS p
+        INNER JOIN product_product_category AS c
+            ON p.id = c.product_id
+        INNER JOIN product_category AS cc
+            ON c.category_id = cc.id
+        ORDER BY parent;""",
+    # add a SELECT query for your CMS that returns PAGE_COLS data
+    # ...
+}
 MD_ROOT = 'md/'
 
 
-def load_folder(path, md_root=MD_ROOT):
-    ls = glob.glob(path)
-    for path in ls:
-        load_path(path, md_root)
-
-
-def load_db(query=SQL_SELECT_WP, md_root=MD_ROOT):
+def load_db(md_root=MD_ROOT):
     """Export all DB rows to markdown text files"""
     if not os.path.exists(md_root):
         os.makedirs(md_root)
-    engine = create_engine(SQL_CONNECT)
+    engine = create_engine(DB_URI)
     with engine.connect() as con:
+        query = os.getenv('DB_QUERY') or CMS_QUERIES[CMS_NAME]
         rs = con.execute(query)
         for row in rs:
             page = dict(zip(PAGE_COLS, row))
@@ -85,6 +100,12 @@ def load_path(path, md_root):
     save_md_page(page, md_root)
 
 
+def load_folder(path, md_root=MD_ROOT, load_func=load_path):
+    ls = glob.glob(path)
+    for path in ls:
+        load_func(path, md_root)
+
+
 def save_md_page(pd, md_root):
     """
     Exports a page dict pd as markdown file
@@ -102,14 +123,13 @@ def save_md_page(pd, md_root):
 
     path = os.path.join(md_root, f'{slug}.md')
 
-    d = None  # subdirectory
     if parent:
         d = os.path.join(md_root, parent)
-    if pd.get('children'):
-        d = os.path.join(md_root, slug)
-        path = path.replace('.md', '/index.md')
-    if d and not os.path.exists(d + '/'):
-        os.makedirs(d)
+        path = os.path.join(d, f'{slug}.md')
+        # TODO if has children
+        # path = path.replace('.md', '/index.md')
+        if not os.path.exists(d):
+            os.makedirs(d)
     with open(path, 'a+') as f:
         headline = f'{title}\n{"=" * len(title)}\n\n'
         author = f'By **{author}**\n\n' if author else ''
@@ -121,5 +141,4 @@ def save_md_page(pd, md_root):
 
 
 if __name__ == '__main__':
-    # load_folder()
     load_db()
