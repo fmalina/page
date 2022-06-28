@@ -115,21 +115,19 @@ def save_md_page(pd, md_root):
     """
     title = pd.get('title')
     slug = pd.get('slug')
-    parent = pd.get('parent')
+    parent = pd.get('parent', '')
     content = pd.get('body')
     author = pd.get('author', '')
     created = pd.get('created') or date.today()
     created = datetime.combine(created, datetime.min.time())
 
-    path = os.path.join(md_root, f'{slug}.md')
-
-    if parent:
-        d = os.path.join(md_root, parent)
-        path = os.path.join(d, f'{slug}.md')
-        # TODO if has children
-        # path = path.replace('.md', '/index.md')
-        if not os.path.exists(d):
-            os.makedirs(d)
+    path = os.path.join(md_root, parent, f'{slug}.md')
+    d = os.path.join(md_root, parent)
+    if parent == '':
+        d = os.path.join(md_root, slug)
+        path = os.path.join(md_root, f'{slug}/index.md')
+    if not os.path.exists(d):
+        os.makedirs(d)
     with open(path, 'a+') as f:
         headline = f'{title}\n{"=" * len(title)}\n\n'
         author = f'By **{author}**\n\n' if author else ''
