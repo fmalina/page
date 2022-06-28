@@ -118,7 +118,7 @@ def save_md_page(pd, md_root):
     parent = pd.get('parent')
     content = pd.get('body')
     author = pd.get('author', '')
-    created = pd.get('created') or date.taday()
+    created = pd.get('created') or date.today()
     created = datetime.combine(created, datetime.min.time())
 
     path = os.path.join(md_root, f'{slug}.md')
