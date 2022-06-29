@@ -34,6 +34,7 @@ class Page:
     source: str
     author: str = ''
     ext: str = ''
+    home: bool = False
 
     def __init__(self, path=None, source='', ext=''):
         if path:
@@ -57,6 +58,8 @@ class Page:
                 self.parent = None
             if self.parent == Path(self.source).stem:  # top level
                 self.parent = None
+            if self.slug == Path(self.source).stem and not self.parent:  # homepage
+                self.home = True
             self.created = dt.fromtimestamp(os.path.getctime(path))
 
     @staticmethod
@@ -80,8 +83,10 @@ class Page:
     def get_absolute_url(self):
         if self.parent:
             return f'/{self.parent}/{self.slug}{self.ext}'
-        else:
+        elif not self.home:
             return f'/{self.slug}{self.ext}'
+        else:
+            return '/'
 
     @property
     def teaser(self):
