@@ -33,16 +33,23 @@ def generate_site(source, target, tpl, ext, ctx=None):
         ctx = json.loads(ctx)
     if not os.path.exists(target):
         os.makedirs(target)
+    ls = sorted(pages, key=lambda x: x.slug)
+    ls = sorted(ls, key=lambda x: x.parent or '')
+
     for p in pages:
-        content = render_page(p, pages, tpl_env, ctx).encode()
-        generate_page(target, path=f'{p.get_absolute_url}', content=content)
-    feed = render_feed(pages, tpl_env, ctx, tpl='page/feed.xml').encode()
-    smap = render_feed(pages, tpl_env, ctx, tpl='page/sitemap.xml').encode()
-    generate_page(target, path='/feed.xml', content=feed)
-    generate_page(target, path='/sitemap-pages.xml', content=smap)
+        content = render_page(p, ls, tpl_env, ctx)
+        write_content(target, path=p.get_absolute_url, content=content)
+
+    ctx.update(pages=date_sort(pages))
+    feed = render_any(tpl_env, ctx, tpl='page/feed.xml')
+    smap = render_any(tpl_env, ctx, tpl='page/sitemap.xml')
+    style = render_any(tpl_env, ctx, tpl='page/style.css')
+    write_content(target, path='/feed.xml', content=feed)
+    write_content(target, path='/sitemap-pages.xml', content=smap)
+    write_content(target, path='/style.css', content=style)
 
 
-def generate_page(static_root, path, content):
+def write_content(static_root, path, content):
     """Utility to write and brotli compress a page
     given a server static root, URL path and page content"""
     no_leading_slash = str(path)[1:]
@@ -74,25 +81,28 @@ def get_template(tpl_env, tpl):
         return tpl_env.get_template(tpl)
 
 
-def render_page(page, all_pages, tpl_env, more_context, tpl='page/page.html'):
+def render_any(tpl_env, ctx, tpl):
     tpl = get_template(tpl_env, tpl)
-    # nav list
-    ls = []
-    if page.slug in ['blog', 'help', 'activism']:
-        ls = list(page.list(Path(page.path).parent))
-        # pick nav pages out of full list
-        ls = [x for x in all_pages if x.path in ls]
-        # order blog entries by date
-        if page.parent == 'blog':
-            ls = date_sort(ls)
+    return tpl.render(**ctx).encode()
+
+
+def render_page(page, ls, tpl_env, ctx, tpl='page/page.html'):
+    # nav list from this folder
+    in_folder = list(page.list(Path(page.path).parent))
+    # pick pages by path out of a full list
+    ls = [x for x in ls if x.path in in_folder]
+    # pick full parent page object by slug, next(filter(lambda.. is slower
+    parent_page = None
+    if page.parent:
+        parent_page = [x for x in ls if x.slug == page.parent][0]
+    # order blog entries by date
+    if page.parent == 'blog':
+        ls = date_sort(ls)
+    if page.home:
+        ls = [x for x in ls if not x.parent]
     print(page.get_absolute_url)  # ls[:3]
-    return tpl.render(page=page, ls=ls, desc=page.desc, **more_context)
-
-
-def render_feed(all_pages, tpl_env, more_context, tpl):
-    all_pages = date_sort(all_pages)
-    tpl = get_template(tpl_env, tpl)
-    return tpl.render(pages=all_pages, **more_context)
+    ctx.update(page=page, parent_page=parent_page, ls=ls, desc=page.desc)
+    return render_any(tpl_env, ctx, tpl)
 
 
 def delete_folders(folders, root):

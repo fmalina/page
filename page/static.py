@@ -15,7 +15,7 @@ and `CACHING = True` one can export static "detail" pages like so:
 """
 
 from functools import wraps
-from page.gen import generate_page
+from page.gen import write_content
 
 
 def static_cache_middleware(get_response):
@@ -28,7 +28,7 @@ def static_cache_middleware(get_response):
         if static_gen:
             del response['Static-Cache']
         if settings.CACHING and response.status_code == 200 and static_gen:
-            generate_page(
+            write_content(
                 settings.STATIC_ROOT,
                 request.get_full_path(),
                 response.content
