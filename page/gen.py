@@ -47,7 +47,7 @@ def generate_site(source, target, tpl, ext, ctx=None):
     write_content(target, path='/sitemap-pages.xml', content=smap)
     assets = os.path.join(source, '_assets')
     if os.path.exists(assets):
-        shutil.copytree(assets, target)
+        shutil.copytree(assets, target, dirs_exist_ok=True)
 
 
 def write_content(static_root, path, content):
