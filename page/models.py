@@ -24,6 +24,7 @@ class Page:
             source (str): source folder (top level) used to determine top level pages
             author (str): extracted using "By **author name**" pattern right after heading
             ext (str): empty string, .htm or .html
+            home (bool): True for homepage
     """
     title: str
     body: str
