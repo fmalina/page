@@ -23,6 +23,9 @@ def cli(source, target, tpl, ext, ctx):
 
 def generate_site(source, target, tpl, ext, ctx=None):
     """Pages: static site generator"""
+    assets = os.path.join(source, '_assets')
+    if os.path.exists(assets):
+        shutil.copytree(assets, target, dirs_exist_ok=True)
     pages = [Page(path, source, ext) for path in Page.list(Path(source))]
     if tpl == 'page':
         loader = PackageLoader(tpl)
@@ -45,9 +48,6 @@ def generate_site(source, target, tpl, ext, ctx=None):
     smap = render_any(tpl_env, ctx, tpl='page/sitemap.xml')
     write_content(target, path='/feed.xml', content=feed)
     write_content(target, path='/sitemap-pages.xml', content=smap)
-    assets = os.path.join(source, '_assets')
-    if os.path.exists(assets):
-        shutil.copytree(assets, target, dirs_exist_ok=True)
 
 
 def write_content(static_root, path, content):
@@ -96,7 +96,10 @@ def render_page(page, ls, tpl_env, ctx, tpl='page/page.html'):
     parent_page = None
     if page.parent:
         parent_page = [x for x in ls if x.slug == page.parent][0]
-    if parent_page in ls:
+    # remove parent page from current sibling nav list
+    if not parent_page:
+        ls.remove(page)
+    else:
         ls.remove(parent_page)
     # order blog entries by date
     if page.parent == 'blog':

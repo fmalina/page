@@ -43,8 +43,13 @@ class Page:
             self.source = source
             self.ext = ext
             content = open(path).read()
-            self.title = self.widont(content.split('\n' if content.startswith('#') else '\n===')[0])
-            self.md_body = ''.join(content.split('\n' if content.startswith('#') else '===\n')[1:])
+            if content.startswith('#'):
+                self.title = content.split('\n')[0].replace('# ', '')
+                self.md_body = '\n'.join(content.split('\n')[1:])
+            else:
+                self.title = content.split('\n===')[0]
+                self.md_body = ''.join(content.split('===\n')[1:])
+            self.title = self.widont(self.title)
             self.body = markdown(self.md_body)
             self.author = ''
             if self.body.startswith('By **'):
@@ -101,7 +106,7 @@ class Page:
         return meta_desc(s)
 
     def __str__(self):
-        return self.title
+        return self.get_absolute_url
 
     def __repr__(self):
         return self.get_absolute_url
