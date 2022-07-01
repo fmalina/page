@@ -43,10 +43,11 @@ def generate_site(source, target, tpl, ext, ctx=None):
     ctx.update(pages=date_sort(pages))
     feed = render_any(tpl_env, ctx, tpl='page/feed.xml')
     smap = render_any(tpl_env, ctx, tpl='page/sitemap.xml')
-    style = render_any(tpl_env, ctx, tpl='page/style.css')
     write_content(target, path='/feed.xml', content=feed)
     write_content(target, path='/sitemap-pages.xml', content=smap)
-    write_content(target, path='/style.css', content=style)
+    assets = os.path.join(source, '_assets')
+    if os.path.exists(assets):
+        shutil.copytree(assets, target)
 
 
 def write_content(static_root, path, content):
