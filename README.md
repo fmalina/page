@@ -5,6 +5,7 @@ Page, a static website generator
   reflecting the folder structure of source text documents
 - fast, well compressed, mobile friendly pages
 - feed and sitemap files for your subscribers and search engines
+- import from any CMS DB (inc. Wordpress), import HTML sites
 
 Writers love distraction free conventional plain text
 [formatting](https://commonmark.org/help/).
