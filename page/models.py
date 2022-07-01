@@ -15,7 +15,7 @@ class Page:
     Markdown files presented as Page objects
 
     Attributes:
-            title (str): <h1> has to use ==== not # markdown notation
+            title (str): <h1> using === or # heading markdown notation
             body (str): whatever follows h1
             slug (str): URL handle from filename without extension
             path (str): initial text file path
@@ -42,8 +42,8 @@ class Page:
             self.source = source
             self.ext = ext
             content = open(path).read()
-            self.title = self.widont(content.split('\n===')[0])
-            self.md_body = content.split('===\n')[-1]
+            self.title = self.widont(content.split('\n' if content.startswith('#') else '\n===')[0])
+            self.md_body = ''.join(content.split('\n' if content.startswith('#') else '===\n')[1:])
             self.body = markdown(self.md_body)
             self.author = ''
             if self.body.startswith('By **'):
