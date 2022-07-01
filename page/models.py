@@ -75,7 +75,9 @@ class Page:
     @staticmethod
     def widont(x):
         """Prevent lonely last word overhanging in a title (widow)"""
-        return '\u00A0'.join(x.rsplit(' ', 1))
+        if len(x.split()) > 3:
+            return '\u00A0'.join(x.rsplit(' ', 1))
+        return x
 
     @property
     def rfc2822_date(self):
