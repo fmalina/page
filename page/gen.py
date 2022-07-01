@@ -95,6 +95,8 @@ def render_page(page, ls, tpl_env, ctx, tpl='page/page.html'):
     parent_page = None
     if page.parent:
         parent_page = [x for x in ls if x.slug == page.parent][0]
+    if parent_page in ls:
+        ls.remove(parent_page)
     # order blog entries by date
     if page.parent == 'blog':
         ls = date_sort(ls)
