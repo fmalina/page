@@ -70,7 +70,8 @@ class Page:
 
     @staticmethod
     def list(path):
-        return list(path.rglob('*.md')) + list(path.rglob('*.txt'))
+        return list(path.rglob('*.md')) + list(path.rglob('![_assets]*.txt'))
+
 
     @staticmethod
     def widont(x):
