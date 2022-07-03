@@ -50,7 +50,7 @@ class Page:
                 self.title = content.split('\n===')[0]
                 self.md_body = ''.join(content.split('===\n')[1:])
             self.title = self.widont(self.title)
-            self.body = markdown(self.md_body)
+            self.body = markdown(self.md_body, extras=['tables'])
             self.author = ''
             if self.body.startswith('By **'):
                 self.author = self.body.split('By **')[-1].split('**')[0]
