@@ -23,9 +23,6 @@ def cli(source, target, tpl, ext, ctx):
 
 def generate_site(source, target, tpl, ext, ctx=None):
     """Pages: static site generator"""
-    assets = os.path.join(source, '_assets')
-    if os.path.exists(assets):
-        shutil.copytree(assets, target, dirs_exist_ok=True)
     pages = [Page(path, source, ext) for path in Page.list(Path(source))]
     if tpl == 'page':
         loader = PackageLoader(tpl)
@@ -48,6 +45,11 @@ def generate_site(source, target, tpl, ext, ctx=None):
     smap = render_any(tpl_env, ctx, tpl='page/sitemap.xml')
     write_content(target, path='/feed.xml', content=feed)
     write_content(target, path='/sitemap-pages.xml', content=smap)
+
+    print('copying assets..')
+    assets = os.path.join(source, '_assets')
+    if os.path.exists(assets):
+        shutil.copytree(assets, target, dirs_exist_ok=True)
 
 
 def write_content(static_root, path, content):
