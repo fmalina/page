@@ -65,9 +65,11 @@ def write_content(static_root, path, content):
         full_path = os.path.join(full_path, 'index.html')
     with open(full_path, 'wb+') as f:
         f.write(content)
-    with open(full_path + '.br', 'wb+') as cf:
-        compressed = brotli.compress(content)
-        cf.write(compressed)
+    # brotli compress if not a raster image
+    if full_path[-4:] not in ('webp', 'jpeg', '.jpg', '.png', '.gif'):
+        with open(full_path + '.br', 'wb+') as cf:
+            compressed = brotli.compress(content)
+            cf.write(compressed)
 
 
 def date_sort(ls):
