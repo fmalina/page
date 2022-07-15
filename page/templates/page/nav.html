@@ -2,34 +2,23 @@
     <p><small>Created: {{ page.created }}</small></p>
 {% endif %}
 
-{% if page.slug == 'help' %}
-    <ul class="page__list">
-    {% for p in ls %}
-        <li><a href="/{{ page.slug }}/{{ p.slug }}">{{ p.title }}</a></li>
-    {% endfor %}
-    </ul>
-{% endif %}
-
 {% if page.slug == 'blog' %}
     <ul class="page__nav-{{ page.slug }}">
     {% for p in ls %}
         <li class="post">
-            <h2><a href="/{{ page.slug }}/{{ p.slug }}">{{ p.title }}</a></h2>
+            <h2><a href="{{ p.get_absolute_url }}">{{ p.title }}</a></h2>
             {{ p.teaser|safe }}
             {% if p.teaser != p.body %}
-            <p><a href="/{{ page.slug }}/{{ p.slug }}">Continue reading&hellip;</a></p>
+            <p><a href="{{ p.get_absolute_url }}">Continue reading&hellip;</a></p>
             {% endif %}
         </li>
     {% endfor %}
     </ul>
-{% endif %}
-
-{% if page.slug == 'activism' %}
+{% else %}
     <ul class="page__list">
     {% for p in ls %}
-        <li><a href="/{{ page.slug }}/{{ p.slug }}">{{ p.title }}</a>
-        {% if p.author %}by {{ p.author }}{% endif %}
-        </li>
+        <li><a href="{{ p.get_absolute_url }}">{{ p.title }}</a>{% if p.author %}
+        by {{ p.author }}{% endif %}</li>
     {% endfor %}
     </ul>
 {% endif %}

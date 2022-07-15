@@ -21,7 +21,11 @@
     {% if page.author %}
         <div class="author">By <b>{{ page.author }}</b></div>
     {% endif %}
-    {% include 'page/page-banner.html' %}
+
+    {% if page.slug == 'this' %}
+        <!--example to override-->
+    {% endif %}
+
     {{ page.body }}
     {% include 'page/nav.html' %}
     {% if dev %}<p><a href="{{ repo_url }}{{ page.rel_source_path }}">edit</a>{% endif %}
