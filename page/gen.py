@@ -4,21 +4,22 @@ import shutil
 from pathlib import Path
 
 import brotli
-import click
+import yaml
 import jinja2
 from jinja2 import Environment, PackageLoader, FileSystemLoader
 
 from page.models import Page
 
 
-@click.command("cli", context_settings={'show_default': True})
-@click.option('--source', default='.', help='Source folder with markdown files')
-@click.option('--target', default='_static', help='Destination folder for static site')
-@click.option('--tpl', default='page', help='Custom template folder')
-@click.option('--ext', default='.htm', help='File extension')
-@click.option('--ctx', default='', help='Extra context')
-def cli(source, target, tpl, ext, ctx):
-    generate_site(source, target, tpl, ext, ctx)
+def cli():
+    with open('page.yml', 'r') as f:
+        d = yaml.safe_load(f)
+        source = d.get('source', '.')
+        target = d.get('target', '_static')
+        tpl = d.get('tpl', 'page')
+        ext = d.get('ext', '')
+        ctx = d.get('ctx', {})
+        generate_site(source, target, tpl, ext, ctx)
 
 
 def generate_site(source, target, tpl, ext, ctx=None):

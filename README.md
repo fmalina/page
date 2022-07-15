@@ -25,17 +25,18 @@ and create a HTML website in a static folder using default templates.
 
     page
 
-User can run Page with custom options like so:
+it will look for a config file
+[`./page.yml`](https://github.com/fmalina/page/blob/main/page.yml)
+with custom options.
 
-    page --source /markdown/source/folder/\
-         --target /target/folder/\
-         --tpl /custom/template/folder/\
-         --ctx "{'site_name': 'My Site', 'site_url': 'https://example.org'}"\
-         --ext .htm
+    source: /markdown/source/folder/
+    target: /target/folder/
+    tpl: /custom/template/folder/
+    ext: ''  # or '.htm'
+    ctx:
+        site_name: 'My Site'
+        site_url: https://example.org
 
-Users are encouraged to create their own
-[`./page.py`](https://github.com/fmalina/page/blob/main/page.py)
-with custom options to use instead of provided `page` command line program.
 
 Batteries included
 ------------------

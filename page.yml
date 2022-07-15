@@ -1,0 +1,12 @@
+# An example config to generate your site
+# Copy it and change variables as needed
+
+source: .  # Source folder with markdown files, '.' means current folder
+target: ../my_site  # Destination folder for static site, .. means level up relative to current folder
+tpl: ./_tpl  # Custom template folder, './_tpl' is a good convention
+ext: ''  # File extension, can be '.htm'/'.html', empty is best
+ctx:  # Extra context to pass to templates
+    site_name: My site
+    site_url: https://unilexicon.com
+    repo_url: https://github.com/[github username]/[repo name]/blob/main/  # for edit links in development
+    dev: true  # show/hide editing links

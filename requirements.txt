@@ -3,3 +3,4 @@ markdown2
 markupsafe
 brotli
 click
+pyyaml
