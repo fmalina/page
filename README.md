@@ -52,7 +52,20 @@ Programmers using Djagno Web Framework can make their sites faster and less dema
 using **static cache generation** helpers provided,
 see [static.py](https://github.com/fmalina/page/blob/main/page/static.py).
 
+Example websites using page with sources
+----------------------------------------
 
+* [Normy Jedal Food standards](https://unilexicon.com/nom) in Slovak language
+        [sources](https://github.com/fmalina/revisions-nom)
+* [Sip Sip Herbal Medicine](https://unilexicon.com/sip) in Slovak language
+        [sources](https://github.com/fmalina/revisions-sip)
+* Blocl [activist literature](https://blocl.uk/activism),
+        [blog](https://blocl.uk/blog),
+        [privacy policy](https://blocl.uk/privacy)
+        [sources](https://github.com/fmalina/revisions-blocl)
+
+Note: public repositories for projects using page begin with word "revisions" to prevent them
+from being indexed in public search engines as per [github.com/robots.txt](https://github.com/robots.txt)
 ---
 
 Designed in Slovakia by [Francis Malina](https://unilexicon.com/fm/).
