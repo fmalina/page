@@ -18,10 +18,10 @@ Page is a small command line program written in Python programming language.
 It requires [python installed](https://www.python.org/downloads/), which lets user
 install Page on any platform in a single command.
 
-    pip3 install page
+    pip install page
 
 By default, Page will collect all text files in current folder
-and create a HTML website in a static folder using default templates.
+and create a HTML website in a static folder using default templates. Run the program
 
     page
 
