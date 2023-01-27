@@ -67,6 +67,8 @@ Example websites using page with sources
 Note: public repositories for projects using page begin with word "revisions" to prevent them
 from being indexed in public search engines as per [github.com/robots.txt](https://github.com/robots.txt)
 
+E-commerce features for static shops (prototype cart, checkout, persistence, implemented as a template)
+
 ---
 
 Designed in Slovakia by [Francis Malina](https://unilexicon.com/fm/).

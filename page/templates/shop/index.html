@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Eshop</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/shop/style.css">
+    <style>
+        .products{padding:0;list-style:none;display:grid;
+            grid-template-columns:repeat(3, 1fr)}
+    </style>
+</head>
+<body>
+    <h2>Eshop</h2>
+    <div id="cart"></div>
+    <div id="total"></div>
+    <p><a href="/shop/order.htm" class="t">Purchase</a></p>
+    <ul class="products">
+        <li id="product-1">
+            <h3>Produkt 1</h3>
+        </li>
+        <li id="product-2">
+            <h3>Produkt 2</h3>
+        </li>
+        <li id="product-3">
+            <h3>Produkt 3</h3>
+        </li>
+    </ul>
+    <script src="/shop/js/config.js"></script>
+    <script src="/shop/js/shop.js"></script>
+    <script>window.addEventListener("load", PriceData.load);</script>
+</body>
+
+</html>

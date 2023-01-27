@@ -1,0 +1,30 @@
+const Config = {
+  product_csv: '/shop/products.csv',
+  shop_email: 'hi@vizualbod.com',
+  currency: '€',
+  lang: 'sk',
+  sk: {
+    add: 'Pridaj',
+    purchase: 'Objednaj',
+    total: 'Spolu',
+    price: 'Cena',
+    order: 'Objednávka',
+    order_confirm: 'Vašu objednávku sme prijali',
+    address: 'Adresa',
+    name: 'Meno a priezvisko',
+    postcode: 'PSČ',
+    country: 'Štát',
+    phone: 'Telefón',
+    email: 'E-mail',
+    company_details: 'Firemné údaje',
+    companies_only: 'Len pre firmy.',
+    company_name: 'Meno firmy',
+    company_number: 'IČO',
+    vat_id: 'DIČ',
+    shipping_address: 'Iná dodacia adresa',
+    shipping_postcode: 'PSČ dodania',
+    shipping_notes: 'Zadajte ak si želáte tovar doručiť na inú adresu, do práce alebo na stavbu.',
+    confirm_order: 'Potvrď objednávku',
+    cartdata: 'Objednávka'
+  }
+}

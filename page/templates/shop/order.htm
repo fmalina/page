@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title class="t">Order</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/shop/style.css">
+    <style>
+    form ul{padding:0;list-style:none}
+    form section{display:grid;padding:0 0 0.5em 0;grid-template-columns:150px max-content}
+    section.error label{font-weight:bold;color:red}
+    section.error label:after{content:"*"}
+    form input, select, textarea{padding:0.3em}
+    button{padding:0.3em}
+    </style>
+</head>
+<body>
+    <a href="/shop/">Eshop</a>
+    <h2 class="t">Order</h2>
+    <div id="cart"></div>
+    <div id="total"></div>
+    <form action="/shop/order.php" method="POST" id="order_form">
+        <h3>Address</h3>
+        <section id="name-section">
+            <label for="name">Name</label>
+            <input id="name" name="name" autocomplete="name" maxlength="100" pattern="[\p{L} \-\.]+" required>
+        </section>
+        <section id="address-section">
+            <label for="address">Address</label>
+            <textarea id="address" name="address" autocomplete="address" maxlength="300" required></textarea>
+        </section>
+        <section id="postcode-section">
+            <label for="postcode">Postcode</label>
+            <input id="postcode" name="postcode" autocomplete="postal-code" maxlength="20">
+        </section>
+        <section id="country-section">
+            <label for="country">Country</label>
+            <select id="country" name="country" autocomplete="country" required>
+                <option selected> </option>
+                <option value="SK">Slovensko</option>
+                <option value="CZ">Česká republika</option>
+                <option value="AT">Österreich</option>
+                <option value="HU">Magyarország</option>
+            </select>
+        </section>
+        <section id="phone-section">
+            <label for="phone">Phone</label>
+            <input id="phone" name="phone" autocomplete="tel" type="tel" maxlength="30" pattern="[\d \-\+]+" required>
+        </section>
+        <section id="email-section">
+            <label for="email">Email</label>
+            <input id="email" name="email" autocomplete="email" type="email" maxlength="150" required>
+        </section>
+        <h3>Company details</h3>
+        <p class="t">Companies only</p>
+        <section>
+            <label for="company">Company name</label>
+            <input type="text" id="company" name="company">
+        </section>
+        <section>
+            <label for="company-number">Company number</label>
+            <input type="number" id="company-number" name="company-number">
+        </section>
+        <section>
+            <label for="vat-id">VAT ID</label>
+            <input type="number" id="vat-id" name="vat-id">
+        </section>
+        <h3>Shipping address</h3>
+        <p class="t">Shipping notes</p>
+        <section>
+            <label for="shipping_address">Address</label>
+            <textarea id="shipping_address" name="shipping_address"
+              autocomplete="address" maxlength="300"></textarea>
+        </section>
+        <section>
+            <label for="shipping_postcode">Postcode</label>
+            <input id="shipping_postcode" name="shipping_postcode"
+              autocomplete="postal-code" maxlength="20">
+        </section>
+        </fieldset>
+        <input type="hidden" id="orderletter" name="orderletter" />
+        <input type="hidden" id="cartdata" name="cartdata" />
+        <p><button type="submit" class="t">Confirm order</button></p>
+    </form>
+    <script src="/shop/js/config.js"></script>
+    <script src="/shop/js/shop.js"></script>
+    <script src="/shop/js/order.js"></script>
+</body>
+</html>
