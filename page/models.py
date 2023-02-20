@@ -64,8 +64,7 @@ class Page:
                 self.parent = None
             if self.parent == Path(self.source).stem:  # top level
                 self.parent = None
-            if self.slug == Path(self.source).stem or self.slug == 'index'\
-                    and not self.parent:  # homepage
+            if self.slug == 'index' and not self.parent:  # homepage
                 self.home = True
             self.created = dt.fromtimestamp(os.path.getctime(path))
 
