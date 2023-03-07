@@ -38,7 +38,7 @@ def generate_site(source, target, tpl, ext, ctx=None):
     ls = sorted(ls, key=lambda x: x.parent or '')
 
     for p in pages:
-        content = render_page(p, ls, tpl_env, ctx)
+        content = render_page(p, ls, tpl_env, ctx, tpl=f'{tpl}/page.html')
         write_content(target, path=p.get_absolute_url, content=content)
 
     ctx.update(pages=date_sort(pages))
@@ -55,7 +55,6 @@ def generate_site(source, target, tpl, ext, ctx=None):
     ):
         if os.path.exists(assets):
             shutil.copytree(assets, target, dirs_exist_ok=True)
-
 
 
 def write_content(static_root, path, content):
@@ -97,7 +96,7 @@ def render_any(tpl_env, ctx, tpl):
     return tpl.render(**ctx).encode()
 
 
-def render_page(page, ls, tpl_env, ctx, tpl='page/page.html'):
+def render_page(page, ls, tpl_env, ctx, tpl):
     # nav list from this folder
     in_folder = list(page.list(Path(page.path).parent))
     # pick pages by path out of a full list
