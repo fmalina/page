@@ -1,4 +1,4 @@
-const lang = Config[Config.lang];
+const lang = Lang[Config.lang];
 
 const Cart = {
   items: [],
@@ -41,10 +41,11 @@ const Cart = {
     this.items.forEach(function(item) {
       var el = document.createElement("div");
       el.id = `item-${item.id}`;
-      el.innerHTML = `${item.name}
+      el.innerHTML = `
+      <button onclick='Cart.remove("${item.id}")'>&times;</button>
       <input type='number' style='width:3em' value='${item.quantity}' onchange='Cart.updateTotal()'>
       <span class='lineprice'>${Config.currency}${item.price * item.quantity}</span>
-      <button onclick='Cart.remove("${item.id}")'>&times;</button>`;
+      ${item.name}`;
       this.cartEl.appendChild(el);
     }.bind(this));
     this.updateTotal();

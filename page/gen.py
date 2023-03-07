@@ -51,12 +51,14 @@ def generate_site(source, target, tpl, ext, ctx=None):
         # this may need expanding for other theme specific html files
         order = render_any(tpl_env, ctx, tpl='shop/order.htm')
         write_content(target, path='/order.htm', content=order)
+        order2 = render_any(tpl_env, ctx, tpl='shop/order.php')
+        write_content(target, path='/order.php', content=order2)
 
     print('copying assets..')
     tpl_assets = __file__.replace('gen.py', 'templates')
     for assets in (
-        os.path.join(source, '_assets'),  # project assets
-        os.path.join(tpl_assets, tpl, 'assets')  # template assets
+        os.path.join(tpl_assets, tpl, '_assets'),  # template assets
+        os.path.join(source, '_assets'),  # project assets to override tpl assets
     ):
         if os.path.exists(assets):
             shutil.copytree(assets, target, dirs_exist_ok=True)

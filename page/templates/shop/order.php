@@ -1,5 +1,5 @@
 <?
-$conf_str = file_get_contents('js/config.js');
+$conf_str = file_get_contents('config.js');
 $s = str_replace('const Config = ', '', $conf_str);
 $s = preg_replace('/([a-zA-Z_]+):/', '"$1":', $s);
 $s = preg_replace("/'([^']+)'/", '"$1"', $s);
@@ -17,14 +17,15 @@ mail($shop, $cust, $lang['order_confirm'], $o);
     <title>Potvrď objednávku</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/shop/style.css">
+    <link rel="stylesheet" href="{{ site_root }}/style.css">
 </head>
 <body>
-    <a href="/shop/">Eshop</a>
+    <a href="{{ site_root }}/">Eshop</a>
     <h2>Ďakujeme za Vašu objednávku</h2>
     <pre id="order"><?= $_POST['orderletter'] ?></pre>
-    <script src="/shop/js/config.js"></script>
-    <script src="/shop/js/shop.js"></script>
+    <script src="{{ site_root }}/config.js"></script>
+    <script src="{{ site_root }}/lang.js"></script>
+    <script src="{{ site_root }}/shop.js"></script>
     <script>window.addEventListener("load", CartData.clear);</script>
 </body>
 </html>
