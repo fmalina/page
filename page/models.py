@@ -16,7 +16,7 @@ class Page:
 
     Attributes:
             title (str): <h1> using === or # heading markdown notation
-            body (str): whatever follows h1
+            body (str): text following h1
             slug (str): URL handle from filename without extension
             path (str): initial text file path
             parent (str): parent folder
@@ -38,40 +38,40 @@ class Page:
     home: bool = False
 
     def __init__(self, path=None, source='', ext=''):
-        if path:
-            self.path = path
-            self.source = source
-            self.ext = ext
-            content = open(path).read()
-            if content.startswith('#'):
-                self.title = content.split('\n')[0].replace('# ', '')
-                self.md_body = '\n'.join(content.split('\n')[1:])
-            else:
-                self.title = content.split('\n===')[0]
-                self.md_body = ''.join(content.split('===\n')[1:])
-            self.title = self.widont(self.title)
-            self.body = markdown(self.md_body, extras=['tables'])
-            self.author = ''
-            if self.body.startswith('By **'):
-                self.author = self.body.split('By **')[-1].split('**')[0]
-            self.slug = path.stem
-            try:
-                self.parent = path.parts[-2]
-                if self.slug == 'index':
-                    self.slug = self.parent
-                    self.parent = None
-            except IndexError:
+        if not path:
+            return
+        self.path = path
+        self.source = source
+        self.ext = ext
+        content = open(path).read()
+        if content.startswith('#'):
+            self.title = content.split('\n')[0].replace('# ', '')
+            self.md_body = '\n'.join(content.split('\n')[1:])
+        else:
+            self.title = content.split('\n===')[0]
+            self.md_body = ''.join(content.split('===\n')[1:])
+        self.title = self.widont(self.title)
+        self.body = markdown(self.md_body, extras=['tables'])
+        self.author = ''
+        if self.body.startswith('By **'):
+            self.author = self.body.split('By **')[-1].split('**')[0]
+        self.slug = path.stem
+        try:
+            self.parent = path.parts[-2]
+            if self.slug == 'index':
+                self.slug = self.parent
                 self.parent = None
-            if self.parent == Path(self.source).stem:  # top level
-                self.parent = None
-            if self.slug == 'index' and not self.parent:  # homepage
-                self.home = True
-            self.created = dt.fromtimestamp(os.path.getctime(path))
+        except IndexError:
+            self.parent = None
+        if self.parent == Path(self.source).stem:  # top level
+            self.parent = None
+        if self.slug == 'index' and not self.parent:  # homepage
+            self.home = True
+        self.created = dt.fromtimestamp(os.path.getctime(path))
 
     @staticmethod
     def list(path):
         return list(path.rglob('*.md')) + list(path.rglob('![_assets]*.txt'))
-
 
     @staticmethod
     def widont(x):
