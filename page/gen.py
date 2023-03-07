@@ -47,6 +47,11 @@ def generate_site(source, target, tpl, ext, ctx=None):
     write_content(target, path='/feed.xml', content=feed)
     write_content(target, path='/sitemap-pages.xml', content=smap)
 
+    if tpl == 'shop':  # shop specific order form rendering
+        # this may need expanding for other theme specific html files
+        order = render_any(tpl_env, ctx, tpl='shop/order.htm')
+        write_content(target, path='/order.htm', content=order)
+
     print('copying assets..')
     tpl_assets = __file__.replace('gen.py', 'templates')
     for assets in (
