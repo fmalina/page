@@ -50,7 +50,10 @@ markdown powered static site and maintain it with Page.
 
 Programmers using Djagno Web Framework can make their sites faster and less demanding
 using **static cache generation** helpers provided,
-see [static.py](https://github.com/fmalina/page/blob/main/page/static.py).
+see [static.py](https://github.com/fmalina/page/blob/main/static.py).
+
+E-commerce features for static shops (cart, checkout, persistence)
+[implemented as a shop template](https://github.com/fmalina/page/blob/main/page/templates/shop/README.md)
 
 Example websites using page with sources
 ----------------------------------------
@@ -66,8 +69,6 @@ Example websites using page with sources
 
 Note: public repositories for projects using page begin with word "revisions" to prevent them
 from being indexed in public search engines as per [github.com/robots.txt](https://github.com/robots.txt)
-
-E-commerce features for static shops (prototype cart, checkout, persistence, implemented as a template)
 
 ---
 
