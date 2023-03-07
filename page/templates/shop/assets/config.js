@@ -1,5 +1,5 @@
 const Config = {
-  product_csv: '/shop/products.csv',
+  product_csv: '/sip/products.csv',
   shop_email: 'hi@vizualbod.com',
   currency: '€',
   lang: 'sk',

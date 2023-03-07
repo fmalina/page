@@ -12,9 +12,7 @@
 </head>
 <body>
     <h2>Eshop</h2>
-    <div id="cart"></div>
-    <div id="total"></div>
-    <p><a href="/shop/order.htm" class="t">Purchase</a></p>
+    {% include 'cart.html' %}
     <ul class="products">
         <li id="product-1">
             <h3>Produkt 1</h3>
@@ -26,9 +24,6 @@
             <h3>Produkt 3</h3>
         </li>
     </ul>
-    <script src="/shop/js/config.js"></script>
-    <script src="/shop/js/shop.js"></script>
-    <script>window.addEventListener("load", PriceData.load);</script>
+    {% include 'cart.js.html' %}
 </body>
-
 </html>

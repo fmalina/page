@@ -4,7 +4,7 @@
     <title class="t">Order</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/shop/style.css">
+    <link rel="stylesheet" href="{{ site_root }}/style.css">
     <style>
     form ul{padding:0;list-style:none}
     form section{display:grid;padding:0 0 0.5em 0;grid-template-columns:150px max-content}
@@ -15,11 +15,11 @@
     </style>
 </head>
 <body>
-    <a href="/shop/">Eshop</a>
+    <a href="{{ site_root }}/">Eshop</a>
     <h2 class="t">Order</h2>
     <div id="cart"></div>
     <div id="total"></div>
-    <form action="/shop/order.php" method="POST" id="order_form">
+    <form action="{{ site_root }}/order.php" method="POST" id="order_form">
         <h3>Address</h3>
         <section id="name-section">
             <label for="name">Name</label>
@@ -82,8 +82,8 @@
         <input type="hidden" id="cartdata" name="cartdata" />
         <p><button type="submit" class="t">Confirm order</button></p>
     </form>
-    <script src="/shop/js/config.js"></script>
-    <script src="/shop/js/shop.js"></script>
-    <script src="/shop/js/order.js"></script>
+    <script src="{{ site_root }}/config.js"></script>
+    <script src="{{ site_root }}/shop.js"></script>
+    <script src="{{ site_root }}/order.js"></script>
 </body>
 </html>

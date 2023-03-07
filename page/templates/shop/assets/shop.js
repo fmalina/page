@@ -20,7 +20,7 @@ const Cart = {
     } else {
       Cart.items.push({
         id: item.id,
-        name: item.querySelector('h3').textContent,
+        name: item.querySelector('h1').textContent,
         price: item.getAttribute('data-price'),
         quantity: 1
       });
@@ -42,7 +42,7 @@ const Cart = {
       var el = document.createElement("div");
       el.id = `item-${item.id}`;
       el.innerHTML = `${item.name}
-      <input type='number' value='${item.quantity}' onchange='Cart.updateTotal()'>
+      <input type='number' style='width:3em' value='${item.quantity}' onchange='Cart.updateTotal()'>
       <span class='lineprice'>${Config.currency}${item.price * item.quantity}</span>
       <button onclick='Cart.remove("${item.id}")'>&times;</button>`;
       this.cartEl.appendChild(el);
@@ -101,16 +101,18 @@ const PriceData = {
           var productId = product[0];
           var productPrice = product[1];
           var product = document.getElementById(productId);
-          product.setAttribute('data-price', productPrice);
+          if(product){
+              product.setAttribute('data-price', productPrice);
 
-          // create price and button elements
-          var button = document.createElement('button');
-          var pricep = document.createElement('p');
-          pricep.innerHTML = `${lang.price}: ${Config.currency}${productPrice}`;
-          button.innerHTML = lang.add;
-          button.addEventListener('click', Cart.add);
-          product.appendChild(pricep);
-          product.appendChild(button);
+              // create price and button elements
+              var button = document.createElement('button');
+              var pricep = document.createElement('p');
+              pricep.innerHTML = `${lang.price}: ${Config.currency}${productPrice}`;
+              button.innerHTML = lang.add;
+              button.addEventListener('click', Cart.add);
+              product.appendChild(pricep);
+              product.appendChild(button);
+          }
       });
   }
 }
