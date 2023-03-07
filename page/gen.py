@@ -48,9 +48,14 @@ def generate_site(source, target, tpl, ext, ctx=None):
     write_content(target, path='/sitemap-pages.xml', content=smap)
 
     print('copying assets..')
-    assets = os.path.join(source, '_assets')
-    if os.path.exists(assets):
-        shutil.copytree(assets, target, dirs_exist_ok=True)
+    tpl_assets = __file__.replace('gen.py', 'templates')
+    for assets in (
+        os.path.join(source, '_assets'),  # project assets
+        os.path.join(tpl_assets, tpl, 'assets')  # template assets
+    ):
+        if os.path.exists(assets):
+            shutil.copytree(assets, target, dirs_exist_ok=True)
+
 
 
 def write_content(static_root, path, content):
