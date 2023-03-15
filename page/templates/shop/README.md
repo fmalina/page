@@ -1,18 +1,21 @@
-# Introduction
+# Page shop Introduction
 
 Page, a static website generator, is a fast and easy-to-use tool for creating
 static websites. With the addition of a JS shopping cart code, it is now
 possible to add e-commerce features to your static website, without the need
-for a complex and expensive online shop software like Magento or Shopify.
+for a complex server-side or expensive SaaS shop software.
 
 ## Installation and Configuration
 
 To use the JS shopping cart code with Page, you'll need to follow these steps:
 
-1. Download the shopping cart code and add it to your project's folder.
-2. Modify the Config object in the shopping cart code to match your needs.
+1. Set 'shop' as template in your page.yml or
+   copy whole shop template to your project's folder.
+2. Modify the config.js in the _assets folder to match your needs.
    This includes setting the path to your product CSV file, your shop email,
-   currency, and language.
+   currency, and language. Product CSV file lives in your _assets folder 
+   and contains product codes matching product info file names,
+   prices and stock quantities.
 3. Add the necessary HTML and JS code to your Page templates to display the
    shopping cart and enable the checkout process. You can refer to the
    documentation provided with the shopping cart code for detailed
