@@ -6,7 +6,10 @@ from pathlib import Path
 import brotli
 import yaml
 import jinja2
-from jinja2 import Environment, PackageLoader, FileSystemLoader
+from jinja2 import (
+    Environment, select_autoescape,
+    PackageLoader, FileSystemLoader
+)
 
 from page.models import Page
 
@@ -29,7 +32,7 @@ def generate_site(source, target, tpl, ext, ctx=None):
         loader = PackageLoader(tpl)
     else:
         loader = FileSystemLoader(tpl)
-    tpl_env = Environment(loader=loader)
+    tpl_env = Environment(loader=loader, autoescape=select_autoescape())
     if ctx and not isinstance(ctx, dict):
         ctx = json.loads(ctx)
     if not os.path.exists(target):
@@ -94,7 +97,7 @@ def get_template(tpl_env, tpl):
         return tpl_env.get_template(tpl)
     except jinja2.exceptions.TemplateNotFound:
         loader = PackageLoader('page')
-        tpl_env = Environment(loader=loader)
+        tpl_env = Environment(loader=loader, autoescape=select_autoescape())
         return tpl_env.get_template(tpl)
 
 
