@@ -7,6 +7,7 @@ $cnf = json_decode($s, true);
 $lang = $cnf[$cnf['lang']];
 $shop = $cnf['email_address'];
 $cust = $_POST['email'];
+$order = htmlspecialchars($_POST['orderletter']);
 
 mail($shop, $shop, $lang['order'], $o);
 mail($shop, $cust, $lang['order_confirm'], $o);
@@ -22,7 +23,7 @@ mail($shop, $cust, $lang['order_confirm'], $o);
 <body>
     <a href="{{ site_root }}/">Eshop</a>
     <h2>Ďakujeme za Vašu objednávku</h2>
-    <pre id="order"><?= $_POST['orderletter'] ?></pre>
+    <pre id="order"><?= $order ?></pre>
     <script src="{{ site_root }}/config.js"></script>
     <script src="{{ site_root }}/lang.js"></script>
     <script src="{{ site_root }}/shop.js"></script>
