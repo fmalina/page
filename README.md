@@ -1,6 +1,8 @@
 Page, a static website generator
 ================================
 
+![website = compile(markdown content, templates)](page.png)
+
 - creates a well organized website with clear navigation
   reflecting the folder structure of source text documents
 - fast, well compressed, mobile friendly pages
