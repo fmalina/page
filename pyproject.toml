@@ -1,0 +1,53 @@
+[project]
+name = "page"
+version = "0.2.1"
+description = "Static website generator"
+readme = "README.md"
+readme-content-type = "text/markdown"
+license = { text = "BSD License" }
+authors = [
+    { name = "F. Malina", email = "fmalina@pm.me" }
+]
+keywords = ["CMS", "static"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Programming Language :: Python :: 3",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "License :: OSI Approved :: BSD License",
+    "Topic :: Documentation",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: News/Diary",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: Content Management System"
+]
+urls = { "Funding" = "https://unilexicon.com/fm/pay.html" }
+requires-python = ">=3.9"
+dependencies = [
+    "jinja2",
+    "markdown2",
+    "markupsafe",
+    "brotli",
+    "click",
+    "pyyaml"
+]
+
+[project.optional-dependencies]
+dev = [
+    "markdownify",
+    "lxml",
+    "django",
+    "sqlalchemy",
+    "pymysql"
+]
+
+[tool.setuptools.packages.find]
+include = ["page"]
+
+[tool.setuptools.include-package-data]
+enabled = true
+
+[project.scripts]
+page = "page.gen:cli"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

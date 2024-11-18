@@ -1,5 +1,0 @@
-markdownify
-lxml
-django
-sqlalchemy
-pymysql
