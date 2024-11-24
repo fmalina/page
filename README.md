@@ -55,7 +55,7 @@ using **static cache generation** helpers provided,
 see [static.py](https://github.com/fmalina/page/blob/main/static.py).
 
 E-commerce features for static shops (cart, checkout, persistence) implemented as a 
-[shop template](https://github.com/fmalina/page/blob/main/page/templates/shop/README.md)
+[shop template](https://github.com/fmalina/pageshop)
 
 Example websites using page with sources
 ----------------------------------------
