@@ -2,37 +2,42 @@ import json
 import os
 import shutil
 from pathlib import Path
-
 import brotli
 import yaml
-import jinja2
-from jinja2 import (
-    Environment, select_autoescape,
-    PackageLoader, FileSystemLoader
-)
-
+from minijinja import Environment
 from page.models import Page
 
 
 def cli():
-    with open('page.yml', 'r') as f:
+    try:
+        f = open('page.yml', 'r')
         d = yaml.safe_load(f)
-        source = d.get('source', '.')
-        target = d.get('target', '_static')
-        tpl = d.get('tpl', 'page')
-        ext = d.get('ext', '')
-        ctx = d.get('ctx', {})
-        generate_site(source, target, tpl, ext, ctx)
+    except FileNotFoundError:
+        print('No page.yml file, using defaults.')
+        d = {}
+    source = d.get('source', '.')
+    target = d.get('target', '_static')
+    tpl = d.get('tpl', 'page')
+    ext = d.get('ext', '')
+    ctx = d.get('ctx', {})
+    generate_site(source, target, tpl, ext, ctx)
+
+
+def load_templates(user_tpl_dir):
+    tpls = list(Path(__file__).parent.glob('templates/*'))\
+           + list(Path(user_tpl_dir).glob('*'))
+    return {x.name: x.read_text() for x in tpls}
+
+
+def render_tpl(env, ctx, tpl):
+    return env.render_template(tpl, **ctx).encode()
 
 
 def generate_site(source, target, tpl, ext, ctx=None):
     """Pages: static site generator"""
     pages = [Page(path, source, ext) for path in Page.list(Path(source))]
-    if tpl == 'page':
-        loader = PackageLoader(tpl)
-    else:
-        loader = FileSystemLoader(tpl)
-    tpl_env = Environment(loader=loader, autoescape=select_autoescape())
+
+    env = Environment(templates=load_templates(tpl))
     if ctx and not isinstance(ctx, dict):
         ctx = json.loads(ctx)
     if not os.path.exists(target):
@@ -41,20 +46,20 @@ def generate_site(source, target, tpl, ext, ctx=None):
     ls = sorted(ls, key=lambda x: x.parent or '')
 
     for p in pages:
-        content = render_page(p, ls, tpl_env, ctx, tpl=f'{tpl}/page.html')
+        content = render_page(p, ls, env, ctx, tpl='page.html')
         write_content(target, path=p.get_absolute_url, content=content)
 
     ctx.update(pages=date_sort(pages))
-    feed = render_any(tpl_env, ctx, tpl='page/feed.xml')
-    smap = render_any(tpl_env, ctx, tpl='page/sitemap.xml')
+    feed = render_tpl(env, ctx, tpl='feed.xml')
+    smap = render_tpl(env, ctx, tpl='sitemap.xml')
     write_content(target, path='/feed.xml', content=feed)
     write_content(target, path='/sitemap-pages.xml', content=smap)
 
-    if tpl == 'shop':  # shop specific order form rendering
+    if 'shop' in tpl:  # shop specific order form rendering
         # this may need expanding for other theme specific html files
-        order = render_any(tpl_env, ctx, tpl='shop/order.htm')
+        order = render_tpl(env, ctx, tpl='order.htm')
         write_content(target, path='/order.htm', content=order)
-        order2 = render_any(tpl_env, ctx, tpl='shop/order.php')
+        order2 = render_tpl(env, ctx, tpl='order.php')
         write_content(target, path='/order.php', content=order2)
 
     print('copying assets..')
@@ -91,21 +96,6 @@ def date_sort(ls):
     return sorted(ls, key=lambda x: x.created, reverse=True)
 
 
-def get_template(tpl_env, tpl):
-    """Fallback"""
-    try:
-        return tpl_env.get_template(tpl)
-    except jinja2.exceptions.TemplateNotFound:
-        loader = PackageLoader('page')
-        tpl_env = Environment(loader=loader, autoescape=select_autoescape())
-        return tpl_env.get_template(tpl)
-
-
-def render_any(tpl_env, ctx, tpl):
-    tpl = get_template(tpl_env, tpl)
-    return tpl.render(**ctx).encode()
-
-
 def render_page(page, ls, tpl_env, ctx, tpl):
     # nav list from this folder
     in_folder = list(page.list(Path(page.path).parent))
@@ -127,7 +117,7 @@ def render_page(page, ls, tpl_env, ctx, tpl):
         ls = [x for x in ls if not x.parent]
     print(page.get_absolute_url)  # ls[:3]
     ctx.update(page=page, parent_page=parent_page, ls=ls, desc=page.desc)
-    return render_any(tpl_env, ctx, tpl)
+    return render_tpl(tpl_env, ctx, tpl)
 
 
 def delete_folders(folders, root):
