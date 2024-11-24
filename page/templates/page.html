@@ -1,47 +1,44 @@
 <!DOCTYPE html>
-<html ⚡>
+<html>
 <head>
 <meta charset="utf-8">
 <title>{% block title %}{{ page.title }}{% if page.author %} by {{ page.author }}{% endif %} - {{ site_name }}{% endblock %}</title>
 <meta name="description" content="{% block desc %}{{ desc }}{% endblock %}">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
+<style>
+body{font-family:Helvetica,sans-serif;margin:0}
+header,main,footer{padding:2em}
+header{background:darkslategray} header a{color:white;text-decoration:none}
+h1{margin-top:0} main{max-width:60em}
+</style>
 {% block head %}
-<link rel="canonical" href="{{ page.get_absolute_url }}">
+<link rel="canonical" href="{{ page.get_absolute_url|safe }}">
 <link rel="alternate" href="/feed.xml" type="application/rss+xml" title="RSS">
 {% endblock %}
 </head>
 <body class="{% block body_class %}page page__{{ page.slug }}{% endblock %}">
 <header><a href="/">{{ site_name }}</a></header>
 <main class="content">
-
 {% block breadcrumb %}
 {% if page.parent %}
     <div class="breadcrumb" itemprop="breadcrumb">
 		<a href="/">Home</a> ›
-        <a href="/{{ page.parent }}">{{ page.parent }}</a> ›
+        <a href="/{{ page.parent|safe }}">{{ page.parent }}</a> ›
     </div>
 {% endif %}
 {% endblock %}
 
 {% block content %}
-    <h1>{{ page.title }}</h1>
-    {% if page.author %}
-        <div class="author">By <b>{{ page.author }}</b></div>
-    {% endif %}
-
-    {% if page.slug == 'this' %}
-        <!--example to override-->
-    {% endif %}
-
-    {{ page.body }}
-    {% include 'nav.html' %}
-    {% if dev %}<p><a href="{{ repo_url }}{{ page.rel_source_path }}">edit</a>{% endif %}
+<h1>{{ page.title }}</h1>
+{% if page.author %}
+    <div class="author">By <b>{{ page.author }}</b></div>
+{% endif %}
+{% if page.slug == 'this' %}<!--example to override--> {% endif %}
+{{ page.body|safe }}
+{% include 'nav.html' %}
+{% if dev %}<p><a href="{{ repo_url|safe }}{{ page.rel_source_path|safe }}">edit</a>{% endif %}
 {% endblock %}
-
 </main>
-<footer>
-<p>&copy; {{ site_name }}
-</footer>
+<footer><p>&copy; {{ site_name }}</footer>
 </body>
 </html>
