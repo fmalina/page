@@ -16,7 +16,7 @@ $ ./page/imports.py
 Convert a static HTML site into source text files
 -------------------------------------------------
 To load Markdown from existing static site, use Python terminal.
-Using load_path as an example with all the tricks, hack your HTML parsing fuction.
+Using load_path as an example with all the tricks, hack your HTML parsing function.
 
 >>> from page.imports import load_folder, load_path
 >>> # def load_path()... # override load path as needed
@@ -34,6 +34,7 @@ from markdownify import markdownify
 from sqlalchemy import create_engine
 
 import pymysql
+
 pymysql.install_as_MySQLdb()
 
 DB_USER = os.getenv('DB_USER')
@@ -44,14 +45,14 @@ CMS_NAME = os.getenv('CMS_NAME') or 'wordpress'
 DB_URI = os.getenv('DB_URI') or f'mysql://{DB_USER}:{DB_PASS}@{DB_HOST}/{DB_NAME}'
 PAGE_COLS = ['id', 'title', 'slug', 'parent', 'body', 'desc', 'created']
 CMS_QUERIES = {
-    'wordpress': f"""
+    'wordpress': """
         SELECT p.ID, p.post_title, p.post_name, par.post_name AS parent,
                p.post_content, p.post_excerpt, p.post_date
         FROM wp_posts AS p
         INNER JOIN wp_posts AS par
             ON p.post_parent = par.ID
         ORDER BY parent;""",
-    'satchmo': f"""
+    'satchmo': """
         SELECT p.id, p.name, p.slug, cc.slug AS parent,
                p.description, p.short_description, p.date_added
         FROM product_product AS p
@@ -91,7 +92,13 @@ def load_path(path, md_root):
     body = doc.cssselect('body')[0]
     for x in body.cssselect('.author') + body.cssselect('h1'):
         x.drop_tree()
-    body = tostring(body).decode('utf-8').replace('<body>', '').replace('</body>', '').strip()
+    body = (
+        tostring(body)
+        .decode('utf-8')
+        .replace('<body>', '')
+        .replace('</body>', '')
+        .strip()
+    )
     body = html.unescape(body)
     slug = title.split(':')[0].lower().replace(' the ', ' ').replace(' a ', ' ')
     slug = ' '.join(slug.split()[:5])
@@ -132,7 +139,7 @@ def save_md_page(pd, md_root):
         headline = f'{title}\n{"=" * len(title)}\n\n'
         author = f'By **{author}**\n\n' if author else ''
         body = markdownify(content, wrap=True)
-        f.write(f"{headline}{author}{body}")
+        f.write(f'{headline}{author}{body}')
         f.close()
         ctime = created.timestamp()
         os.utime(path, (ctime, ctime))

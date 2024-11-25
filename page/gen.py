@@ -24,8 +24,9 @@ def cli():
 
 
 def load_templates(user_tpl_dir):
-    tpls = list(Path(__file__).parent.glob('templates/*'))\
-           + list(Path(user_tpl_dir).glob('*'))
+    tpls = list(Path(__file__).parent.glob('templates/*')) + list(
+        Path(user_tpl_dir).glob('*')
+    )
     return {x.name: x.read_text() for x in tpls}
 
 

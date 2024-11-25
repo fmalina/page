@@ -4,3 +4,4 @@ build
 dist
 uv.lock
 .python-version
+.coverage

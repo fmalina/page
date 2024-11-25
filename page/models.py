@@ -22,10 +22,11 @@ class Page:
             parent (str): parent folder
             created (dt): filesystem time text file was created
             source (str): source folder (top level) used to determine top level pages
-            author (str): extracted using "By **author name**" pattern right after heading
+            author (str): extracted using "By **author**" pattern following a heading
             ext (str): empty string, .htm or .html
             home (bool): True for homepage
     """
+
     title: str
     body: str
     slug: str
@@ -43,7 +44,9 @@ class Page:
         self.path = path
         self.source = source
         self.ext = ext
-        content = open(path).read()
+        content = ''
+        with open(path) as f:
+            content = f.read()
         if content.startswith('#'):
             self.title = content.split('\n')[0].replace('# ', '')
             self.md_body = '\n'.join(content.split('\n')[1:])
@@ -77,7 +80,7 @@ class Page:
     def widont(x):
         """Prevent lonely last word overhanging in a title (widow)"""
         if len(x.split()) > 3:
-            return '\u00A0'.join(x.rsplit(' ', 1))
+            return '\u00a0'.join(x.rsplit(' ', 1))
         return x
 
     @property
@@ -117,7 +120,7 @@ class Page:
 
 def meta_desc(s):
     """Generate short description from body"""
-    s = " ".join(s.split()[:50])
+    s = ' '.join(s.split()[:50])
     limit = 156
     if len(s) <= limit:
         return s

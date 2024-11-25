@@ -1,6 +1,6 @@
 [project]
 name = "page"
-version = "0.2.1"
+version = "0.3"
 description = "Static website generator"
 readme = "README.md"
 readme-content-type = "text/markdown"
@@ -36,7 +36,8 @@ dev = [
     "lxml",
     "django",
     "sqlalchemy",
-    "pymysql"
+    "pymysql",
+    "coverage"
 ]
 
 [tool.setuptools.packages.find]
@@ -51,3 +52,8 @@ page = "page.gen:cli"
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.ruff]
+lint.select = ["E", "F", "B"]
+line-length = 86
+format.quote-style = "single"

@@ -29,9 +29,7 @@ def static_cache_middleware(get_response):
             del response['Static-Cache']
         if settings.CACHING and response.status_code == 200 and static_gen:
             write_content(
-                settings.STATIC_ROOT,
-                request.get_full_path(),
-                response.content
+                settings.STATIC_ROOT, request.get_full_path(), response.content
             )
         return response
 
