@@ -1,5 +1,6 @@
 Page, a static website generator
 ================================
+[![Tests](https://github.com/fmalina/page/actions/workflows/ci.yml/badge.svg)](https://github.com/fmalina/page/actions?query=event%3Apush+branch%3Amain+workflow%3Atests)
 
 ![website = compile(markdown content, templates)](page.png)
 
